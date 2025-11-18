@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>선택자 연습 예제</title>
+	<style>
+		/* 
+		1에 글자색을 빨간으로 번경하려고 할때 
+		*/
+		.ex1 .first{color: red;}
+		li:first-of-type{color: red;}
+		.item.first{color: red;}
+		.ex1 > :first-child{color: red;}
+		[class$=first] {color: red;}
+		[class~=first] {color: red;}
+		[class*=first] {color: red;}
+				/* li태그 hover했을때 배경색이 노랑이 되도록 다음과 같이 작성했는데,올바르게 수정하세요*/
+		.item:hover {background: yellow;}
+		.ex1:hover { background: yellow;}
+		/* ----------------------------예제3-------------------------------------------- */
+		p:hover .front{color: red;}
+	</style>
+</head>
+<body>
+	<h1>선택자 연습 예제</h1>
+	<h2>예제1</h2>
+	<ul class="ex1">
+		<li class="item first">1</li>
+		<li class="item">2</li>
+		<li class="item">3</li>
+		<li class="item">4</li>
+	</ul>
+	<h2>예제3</h2>
+	<!-- 아래 요소를 hover하면 홍길동이 빨간으로 되도록 수정하세요-->
+	<p>안녕하세요. 제 이름은 <span class="front">홍길동</span>입니다</p>
+</body>
+</html>
