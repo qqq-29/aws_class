@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>자식자손 선택자</title>
+	<style>
+	/*
+  자손 선택자 p75
+		- 조상선택자 자손선택자
+    -요소의 안에 있는 선택자
+  자식 선택자 p76
+		- 부모선택자 > 자식선택자
+    - 요소 바로 밑에 있는 선택자
+  -우선순위똑같으면 제일밑에꺼로 실행
+  */
+	.box { color: red; }
+	.box > .link { color: green; }
+	/*-우선순위똑같으면 제일밑에꺼로 실행 */
+	.container .link{ color: blue; }
+	</style>
+</head>
+<body>
+	<h1>자식 자손 선택자 예제</h1>
+	<!-- 
+	.container의 자손 요소는?
+	- .box와 .link
+	.container의 자식 요소는?
+	- .box
+	-->
+	<div class="container">
+		container
+		<div class="box">
+			box
+			<a href="#" class="link">링크</a>
+		</div>
+	</div>
+	<div class="box">
+		box2
+		<a href="#" class="link">링크</a>
+	</div>
+	<div class="box">
+		box3
+		<span class="link">링크</span>
+	</div>
+</body>
+</html>
