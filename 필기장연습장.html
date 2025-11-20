@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -34,5 +34,52 @@
 			<button type="reset">초기화</button>
 		</fieldset>
 	</form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>연습예제</title>
+	<style>
+		.big{
+			width: 500px; 
+			height: 500px; 
+			border: 0px solid black; 
+			background: black;
+		}
+		.leftbox{
+			float: left;
+			width: 235px;
+			height: 480px;
+			background: red;
+			margin: 10px;
+		}
+		.centerbox{
+			
+		}
+		.rightbox{
+			float: right;
+			width: 235px;
+			height: 480px;
+			background: red;
+			margin-top: 10px;
+			margin-right: 10px;
+			margin-bottom: 10px;
+		}
+		.container::after{
+			content: ''; display: block; clear: both;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="big box">
+			<div class="leftbox">1</div>
+			<div class="centerbox">1</div>
+			<div class="rightbox">2</div>
+		</div>
+	</div>
 </body>
 </html>
