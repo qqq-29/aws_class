@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>영역 연습 예제3</title>
+	<style>
+		.container1{
+			border: 3px solid black;
+			float: left;
+		}
+		.container1>.box{
+			width: 100px;
+			height: 150px;
+			box-sizing: border-box;
+			float: left;
+			background: yellow;
+			margin: 10px 5px 10px;
+		}
+		.container1>:nth-child(1){
+			margin-left: 10px;
+		}
+		.container1>:nth-child(3){
+			margin-right: 10px;
+		}
+		.container1::after{
+			content: ''; display: block; clear: both;
+		}
+
+/* ----------------------------------------------------------------------------------- */
+		.container1-1{
+			border: 3px solid black;
+			float: left;
+			padding: 10px;
+		}
+		.container1-1 .box{
+			width: 100px;
+			height: 150px;
+			background: yellow;
+			float: left;
+			/* box에 왼쪽 여백 */
+			margin-left: 10px;
+		}
+
+		.container1-1 > .inner-container{
+			margin-left: -10px;
+		}
+
+/* ---------------------------------------------------------------------------------------- */
+
+		.container2{
+			width: 500px;
+			height: 200px;
+			float: left;
+			border: 3px solid black;
+			padding: 10px;
+		}
+		.box{
+			width: calc((100% - 20px)/3);
+			height: 100%;
+			margin-right: 10px;
+			background: green;
+			float: left;
+		}
+		.container2>:nth-child(3){
+			margin-right: 0px;
+		}
+
+	</style>
+</head>
+<body>
+	<h1>영역 연습 예제3</h1>
+	<!-- 
+	자식 요소인 box의 크기가 정해질 때 3분할 예제
+	각 box의 너비/높이는 100px/150px
+	각 박스 사이의 간격은 10px
+	박스 들과 container1사이의 간격은 10px
+	container1의 테두리는 3px 실선 검은색
+	각 box는 배경이 노란색
+	 -->
+	<div class="container1">
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+	</div>
+
+	<!-- 
+	위 예제 방식과 다른점
+	- 위에 있는 방식은 모두 왼쪽 여백을 지정
+	-->
+	<div class="container1-1">
+		<div class="inner-container">
+			<div class="box"></div>
+			<div class="box"></div>
+			<div class="box"></div>
+		</div>
+	</div>
+
+
+	<!-- 
+	container2의 컨텐츠 너비/높이가 500px/200px
+	container2의 테두리 3px 실선 검은색
+	container2와 box의 간격 10px
+	box 사이의 간격 10px
+	box 색상 green
+	calc()함수 이용
+	-->
+
+
+	<div class="container2">
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+	</div>
+</body>
+</html>
