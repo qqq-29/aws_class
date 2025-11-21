@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>연습 예제2메뉴</title>
+	<style>
+		/* 
+		1. 글자색:검은색,밑줄제거
+			- a태그
+			- 속성 color, text-decoration
+		2. 마커 제거
+			-	ul태그
+			-	list-style
+		3. 앞 여백을 제거
+			- ul태그
+			- padding
+		4. 메뉴들을 한 라인에 배치
+			- li태그
+			- float
+		5. 메뉴를 3등분
+			- li태그
+			- width, box-sizing
+		6. 테두리 추가
+			- li태그
+			- border
+		7. 겹치는 테두리 제거
+			- 2번째 li태드부터 남은 li태그
+			- border-left
+		8. 각 메뉴 링크를 각 메뉴 전체칸으로 확장
+			- a태그
+			- display, height
+		9. 메뉴 글자를 가운데 정렬
+			- a태그
+			- text-align, line-height
+		*/
+		.menu-list{
+			height: 50px;
+			list-style: none;
+			padding: 0;
+
+		}
+		.menu-link{
+			color: black;
+			text-decoration: none;
+			text-align: center;
+			line-height: 34px;
+			box-sizing: content-box;
+			width: calc((100% - 12px)/3);
+			height: 34px;
+			border: 3px solid black;
+			float: left;
+		}
+		.menu-link:hover{
+			background: yellow;
+		}
+		.menu-list :nth-child(1) :nth-child(1){
+			border-right: 0px;
+		}
+		.menu-list :nth-child(2) :nth-child(1){
+			border-right: 0px;
+		}
+	</style>
+</head>
+<body>
+	<h1>연습 예제2_메뉴</h1>
+	<ul class="menu-list">
+		<li class="menu-item">
+			<a href="02_연습 예제2_메뉴 copy.html" class="menu-link">메뉴1</a>
+		</li>
+		<li class="menu-item">
+			<a href="02_연습 예제2_메뉴 copy.html" class="menu-link">메뉴2</a>
+		</li>
+		<li class="menu-item">
+			<a href="02_연습 예제2_메뉴 copy.html" class="menu-link">메뉴3</a>
+		</li>
+	</ul>
+</body>
+</html>
