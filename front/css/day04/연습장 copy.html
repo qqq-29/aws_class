@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연습 예제</title>
+    <style>
+        .container1, .container2 {
+            display: flex; /* 자식 요소들을 가로로 나열 */
+            justify-content: flex-start; /* 왼쪽 정렬 */
+        }
+
+        .box1, .box2 {
+            width: 150px;
+            height: 200px;
+            margin-right: 10px; /* 간격 설정 */
+            overflow: hidden; /* 이미지가 확대되면서 넘치지 않도록 */
+            position: relative; /* 자식 요소의 위치를 기준으로 확대하도록 설정 */
+        }
+
+        .text1, .text2 {
+            text-align: center;
+        }
+
+        /* 이미지 기본 스타일 */
+        img {
+            width: 100%; /* 부모 요소의 크기에 맞게 이미지 크기 설정 */
+            height: 100%; /* 부모 요소의 크기에 맞게 이미지 크기 설정 */
+            transition: transform 0.3s ease; /* 부드러운 확대 효과 */
+            object-fit: cover; /* 이미지 비율을 유지하면서 영역을 가득 채움 */
+        }
+
+        /* 이미지 hover 시 확대 */
+        img:hover {
+            transform: scale(1.03); /* 1.03배 확대 */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container1">
+    <div class="box1">
+        <img src="../../../static/img/주말1.jpg" class="img1-1">
+        <a href="" class="text1">
+            <div>대세는벨르아망</div>
+            <div>방향제바꿔볼까</div>
+        </a>
+    </div>
+    <div class="box1">
+        <img src="../../../static/img/주말1.jpg" class="img1-2">
+        <a href="" class="text1">
+            <div>대세는벨르아망</div>
+            <div>방향제바꿔볼까</div>
+        </a>
+    </div>
+    <div class="box1">
+        <img src="../../../static/img/주말1.jpg" class="img1-3">
+        <a href="" class="text1">
+            <div>대세는벨르아망</div>
+            <div>방향제바꿔볼까</div>
+        </a>
+    </div>
+</div>
+
+<div class="container2">
+    <div class="box2">
+        <img src="../../../static/img/주말1.jpg" class="img2-1">
+        <a href="" class="text2">
+            <div>대세는벨르아망</div>
+            <div>방향제바꿔볼까</div>
+        </a>
+    </div>
+    <div class="box2">
+        <img src="../../../static/img/주말1.jpg" class="img2-2">
+        <a href="" class="text2">
+            <div>대세는벨르아망</div>
+            <div>방향제바꿔볼까</div>
+        </a>
+    </div>
+    <div class="box2">
+        <img src="../../../static/img/주말1.jpg" class="img2-3">
+        <a href="" class="text2">
+            <div>대세는벨르아망</div>
+            <div>방향제바꿔볼까</div>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
