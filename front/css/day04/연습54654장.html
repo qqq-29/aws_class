@@ -4,29 +4,141 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>연습 예제1</title>
+	<!-- Latest compiled and minified CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 	<style>
 		.container{
-			width: 300px;
-			height: 300px;
+			position: relative;
 		}
-		.box .img{
-			width: 150px;
-			height: 200px;
+		.point{
+			width: 4px;
+			height: 4px;
+			border-radius: 100%;
+			background: black;
+			display: inline-block;
 		}
-		.box .text{
-			width: 150px; height: 200px;
-			overflow: auto;	
-			text-align: left;
+		.p{
+			color: gray;
+		}
+
+		.toptext,.newtext{
+			color: gray;
+			text-decoration: none;
+		}
+		.toptext:hover,.newtext2{
+			text-decoration: underline;
+			color: black;
+		}
+		.newtext2{
+			color: gray;
+			text-decoration: none;
+			font-weight: bolder;
+			float: right;
+		}
+		.newtext2:hover{
+			text-decoration: underline;
+			color: black;
+		}
+		.newtext:hover{
+			text-decoration: underline;
+			color: black;
+		}
+		.newbox{
+			background: yellow;
+			margin: 10px 0px 10px 0px;
+			padding: 10px;
+			width: 700px;
+		}
+		.speed{
+			width: 50px;
+			height: 30px;
+			border-radius: 40%;
+			border: 1px solid red;
+			color: red;
+			text-align: center;
+			display:inline-block
+		}
+		.ae86{
+			width: 200px;
+			height: 110px;
+			border-radius: 10%;
+			position: absolute;
+			right: 630px;
+		}
+		.cr{
+			background: blue;
+			height: 30px;
+			width: 30px;
+			border-radius: 50%;
+			display:inline-block
+		}
+		.tv{
+			position: absolute;
+			top: 3px;
+			left: 40px;
+			text-decoration: none;
+		}
+		.centersmallbox{
+			display: inline-block;
+			position: absolute;
+			right: 480px;
 		}
 
 	</style>
 </head>
 <body>
 	<div class="container">
-		<div class="box" >
-			<img src="https://cafe24img.poxo.com/byannanmode/web/product/medium/AN_D1114_N_01_b3.jpg" alt="" class="img">
-			<div class="text">추위도 녹아내릴 매운맛 각오해!</div>
+		<div class="toptextbox">
+			<span>
+				<a href="" class="toptext">뉴스스탠드</a>
+				<div class="point"></div>
+				<a href="" class="toptext">언론사편집</a>
+				<span class="p">/</span>
+				<a href="" class="toptext">엔터</a>
+				<span class="p">/</span>
+				<a href="" class="toptext">스포츠</a>
+				<span class="p">/</span>
+				<a href="" class="toptext">경제</a>
+			</span>
+		</div>
+
+		<div class="newbox">
+			<span>
+				<a href="" class="newtext">분야별 뉴스</a>
+				<span class="p">|</span>
+				<a href="" class="newtext">일보</a>
+				<div class="speed">속보</div>
+				<a href="" class="newtext">경찰경찰경찰경찰경찰</a>
+				<a href="" class="newtext2">뉴스홈</a>
+			</span>
 		</div>
 	</div>
+
+	<div class="centerbox">
+		<img src="../../../static/img/ae86.jpg" alt="ae86.jpg" class="ae86">
+		<div class="centersmallbox">
+		<div class="cr"></div>
+		<a href="" class="tv">kos tv</a>
+		<div>차차차차차차차차차</div>
+		<div>차차차차차차차차차</div>
+		<div>11월 23일 17:20</div>
+		</div>
+	</div>
+	<br><br><br><br><br>
+	<div class="centerbox">
+		<img src="../../../static/img/ae86_back.jpg" alt="ae86.jpg" class="ae86">
+		<div class="centersmallbox">
+		<div class="cr"></div>
+		<a href="" class="tv">22 tv</a>
+		<div>111111111111111</div>
+		<div>333333333333333</div>
+		<div>11월 43일 1:20</div>
+		</div>
+	</div>
+
 </body>
 </html>
