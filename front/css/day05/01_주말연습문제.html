@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>주말 연습 문제 예제</title>
+	<style>
+		/* p태그, body태그,ul태그 등에 자동으로 들어가는 마진과 패딩을 제거 */
+		*{ margin: 0; padding: 0;}
+		/* ul태그에 마커를 제거 */
+		ul, ol{ list-style: none;}
+		a{ text-decoration: none; color: black;}
+
+		.shopping-item{
+			/* 쇼핑 아니템들을 한 라인에 여러개 배치하기 위해 */
+			float: left;
+			/* 쇼핑 아이템들 사이에 여백 */
+			margin-right: 10px;
+		}
+		/* float 속성이 적용된 요소의 부모 요소에 높이를 잡게 하기 위해 */
+		.clearfix::after{
+			clear: both; content: ''; display: block;
+		}
+		.shopping-img-container{
+			width: 150px;
+			height: 200px;
+			/* 상품 이미지를 확대했을 때 이미지가 커지는걸 방지하기 위해 */
+			overflow: hidden;
+			/* 이 요소가 span태그이어서 inline이기 떄문에 block으로 해야 크기 조절가능 */
+			display: block;
+			/* 둥근 테두리 */
+			border-radius: 5px;
+			box-shadow: 0 0 0 1px rgb(0, 0, 0, 0.1);
+		}
+		/* 쇼핑 아이템을 hover 하면 이미지가 확대
+			=> 이미지 뿐 아니라 문구를 hover해도 이미지 확대
+		 */
+		.shopping-item:hover .shopping-img{
+			/* 이미지를 hoxer하면 확대 */
+			transform: scale(1.03);
+		}
+		.shopping-img{
+			transition: transform 0.3s;
+		}
+		.shopping-title{
+			/* span태그에 마진을 적용 */
+			margin-top: 10px;
+			display: block;
+		}
+		.shopping-title:hover{
+			text-decoration: underline;
+		}
+		.shopping-title p{
+			text-align: center;
+			line-height: 16px;
+			font-size: 14px;
+		}
+		.shopping-list{
+			margin: 30px;
+		}
+	</style>
+</head>
+<body>
+	<!-- 네이버 쇼핑몰 아이템 -->
+	 <ul class="shopping-list clearfix">
+		<li class="shopping-item">
+		 <a href="" class="shopping-link">
+			 <span class="shopping-img-container">
+				 <img src="../../../static/img/gif.gif" alt="쇼핑아이템" class="shopping-img" width="150" height="200">
+				</span>
+				<span class="shopping-title">
+					<p>나루토!!!</p>
+					<p>사스케!!!!!!</p>
+				</span>
+			</a>
+		</li>
+		<li class="shopping-item">
+		 <a href="" class="shopping-link">
+			 <span class="shopping-img-container">
+				 <img src="../../../static/img/gif.gif" alt="쇼핑아이템" class="shopping-img" width="150" height="200">
+				</span>
+				<span class="shopping-title">
+					<p>나루토!!!</p>
+					<p>사스케!!!!!!</p>
+				</span>
+			</a>
+		</li>
+		<li class="shopping-item">
+		 <a href="" class="shopping-link">
+			 <span class="shopping-img-container">
+				 <img src="../../../static/img/gif.gif" alt="쇼핑아이템" class="shopping-img" width="150" height="200">
+				</span>
+				<span class="shopping-title">
+					<p>나루토!!!</p>
+					<p>사스케!!!!!!</p>
+				</span>
+			</a>
+		</li>
+		<li class="shopping-item">
+		 <a href="" class="shopping-link">
+			 <span class="shopping-img-container">
+				 <img src="../../../static/img/gif.gif" alt="쇼핑아이템" class="shopping-img" width="150" height="200">
+				</span>
+				<span class="shopping-title">
+					<p>나루토!!!</p>
+					<p>사스케!!!!!!</p>
+				</span>
+			</a>
+		</li>
+	 </ul>
+</body>
+</html>
