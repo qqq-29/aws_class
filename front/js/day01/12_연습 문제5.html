@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>연습 문제5</title>
+</head>
+<body>
+	<h1>성적 출력 예제</h1>
+	<script>
+		/*
+		성적을 정수로 입력받아(prompt) 학점을 출력(document.write)
+		90~100 : A
+		80~89 : B
+		70~79 : C
+		60~69 : D
+		0~59 : F
+		*/ 
+		let score = prompt(`성적입력`)
+		if(score>=90 && score<=100){
+			document.write(`${score}학점은 A`)
+		}else if(score>=80 && score<=89){
+			document.write(`${score}학점은 B`)
+		}else if(score>=70 && score<=79){
+			document.write(`${score}학점은 C`)
+		}else if(score>=60 && score<=69){
+			document.write(`${score}학점은 D`)
+		}else{
+			document.write(`${score}학점은 F`)
+		}
+	</script>
+</body>
+</html>
