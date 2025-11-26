@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		document.write(add(3,5))
+		function add(num1,num2){
+			return num1+num2;
+		}
+		let add = (num1,num2)=>num1+num2;
+
+		let std1 = {
+			name : "냠냠냠",
+			age : 20,
+			addr : "서울",
+		}
+
+		function student(name, age, addr){
+			return{
+			name : name,
+			age : age,
+			addr : addr,
+		}
+		}
+		let std2 = student("dj",30,"asda");
+
+		let arr = [1,2,3,4,5,6];
+		document.write(`배열 : ${arr.join(',')}`)
+
+	</script>
+</body>
+</html>
