@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>이벤트 연습 예제</title>
+</head>
+<body>
+	<button type="button" id="btn1">더보기</button>
+	<script>
+		/*버튼을 클릭항 때마다 문구가 더보기<->접기로 바뀌다*/
+		//요소 선택(버튼)
+		const btn = document.getElementById("btn1")
+		//요소 선택 하나만선택 (선택자로)
+		// const btn = document.querySelector("#btn1")
+		let a=false;
+		const b = btn.textContent;
+		//선택한 요소에 이벤트 등록
+		btn.addEventListener("click",()=>{
+			let text = "접기"
+			if(!a){
+				btn.textContent = text;
+			}else{
+				btn.textContent = b;
+			}
+				a=!a;
+		})
+	</script>
+</body>
+</html>
