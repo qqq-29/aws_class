@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>연습 예제 style 활용하기</title>
+</head>
+<body>
+	<button id="btn1">배경색 변경</button>
+	<hr>
+	<div id="box1"></div>
+	<script>
+		/*
+		버튼을 클릭하면 배경색이 yellow => red => blue =>green => yellow
+		*/
+		const box1 = document.querySelector("#box1");
+		const btn1 = document.querySelector("#btn1");
+
+		box1.style.border = "5px solid black";
+		box1.style.height = "300px"
+
+	// 	btn1.addEventListener("click", function () {
+	// 	if (box1.style.backgroundColor == "") {
+	// 		box1.style.backgroundColor = "yellow";
+	// 	} else if (box1.style.backgroundColor == "yellow") {
+	// 		box1.style.backgroundColor = "red";
+	// 	} else if (box1.style.backgroundColor == "red") {
+	// 		box1.style.backgroundColor = "blue";
+	// 	} else if (box1.style.backgroundColor == "blue") {
+	// 		box1.style.backgroundColor = "green";
+	// 	} else if (box1.style.backgroundColor == "green") {
+	// 		box1.style.backgroundColor = "yellow";
+	// 	}
+	// });
+		let color = ["yellow","red","blue","green"];
+		btn1.addEventListener("click", function(){
+			for(i=0;i<=4;i++){
+				if(i=4){
+					i=0;
+				}
+				box1.style.backgroundColor == color[i];
+			}
+		})
+	</script>
+</body>
+</html>
