@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>요소 추가 연습 예제</title>
+</head>
+<body>
+	<input type="text" id="text" placeholder="좋아하는 과일을 입력하세요.">
+	<button id="btn">등록</button>
+	<button id="btndel">삭제</button>
+	<ul id="list">
+
+	</ul>
+	<script>
+		/*
+		텍스트 입력 후 버튼을 클릭하면 입력된 문구가 리스트에 추가 되도록 작성
+		*/
+		//input태그 요소 선택
+
+		//버튼태그 요소 선택
+
+		//ul태그 요소 선택
+
+		//버튼 태그에 이벤트를 등록(클릭)
+
+		//input태그에 입력된 텍스트를 가져옴
+
+		//ul태그에 기존 HTML코드 뒤에 li태그를 추가(입력된 텍스트를 이용)
+		const inputtext = document.getElementById("text");
+		const btn = document.getElementById("btn");
+		const del = document.getElementById("btndel");
+		const list = document.getElementById("list");
+
+		btn.addEventListener("click",function(){
+			list.innerHTML = list.innerHTML + `<li>${inputtext.value}</li>`
+		})
+		del.addEventListener("click",function(){
+			list.innerHTML = ""
+		})
+	</script>
+</body>
+</html>
