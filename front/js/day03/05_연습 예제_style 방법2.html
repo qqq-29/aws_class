@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>연습 예제 style 활용하기</title>
+</head>
+<body>
+	<button id="btn1">배경색 변경</button>
+	<hr>
+	<div id="box1" data-num="-1"></div>
+	<script>
+		/*
+		버튼을 클릭하면 배경색이 yellow => red => blue =>green => yellow
+		*/
+		const box1 = document.querySelector("#box1");
+		const btn1 = document.querySelector("#btn1");
+
+		box1.style.border = "5px solid black";
+		box1.style.height = "300px"
+
+		// btn1.addEventListener("click", function(){
+		// 	const bgcolors = ["yellow","red","blue","green"];
+		// 	//box1의 data-num 값을 가져옴
+		// 	let num = parseInt(box1.dataset.num);
+		// 	//data-num값을 1증가
+		// 	num++
+
+		// 	//num가 4이상이 되는걸 방지하기 위해 나머지 연산 => 색상이 반복적으로 바뀜
+		// 	num = num%4;
+
+		// 	//증가된 data-num에 맞는 색상을 선택해서 배경색으로 변경
+		// 	box1.style.backgroundColor = bgcolors[num];
+
+		// 	//box1의 data-num을 기존 data-num에서 1증가한 값으로 변경
+		// 	box1.dataset.num = num;
+		// });
+// --------------------------------------------------------------------------
+		//뛰에 안돼
+		btn1.addEventListener("click", function(){
+			const color = ["yellow","red","blue","green"];
+			
+			for(i=0;i<=4;i++){
+				if(i=4){
+					i=0;
+				}
+				box1.style.backgroundColor == color[i];
+			}
+		})
+	</script>
+</body>
+</html>
