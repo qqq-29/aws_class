@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>요소 삭세 예제</title>
+</head>
+<body>
+	<ul>
+		<li>
+			<span>사과</span>
+			<button class="del-btn">X</button>
+		</li>
+		<li>
+			<span>바나나</span>
+			<button class="del-btn">X</button>
+		</li>
+		<li>
+			<span>포도</span>
+			<button class="del-btn">X</button>
+		</li>
+	</ul>
+	<script>
+		/*
+		X버튼을 클릭하면 X버튼이 있는 li태그를 삭제하세요
+		*/
+		const del = document.querySelectorAll(".del-btn");
+		del.forEach(dele=>{
+			dele.addEventListener("click",function(){
+				//삭제 버튼을 감싸는 부모 요소를 삭제
+				dele.parentElement.remove();
+			})
+		});
+		//del.forEach(dele=>{의 뜻
+		// for(i = 0; i<del.length; i++){
+		// 	let btn = del[i];
+		// }
+	</script>
+</body>
+</html>
