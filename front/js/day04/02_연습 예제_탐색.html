@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>탐색 연습 예제</title>
+	<style>
+		
+	</style>
+</head>
+<body>
+	<h1>탐색 연습 예제</h1>
+	<ul>
+		<li>
+			<span>사과</span>
+			<button class="del">X</button>
+		</li>
+		<li>
+			<span>바나나</span>
+			<button class="del">X</button>
+		</li>
+		<li>
+			<span>포도</span>
+			<button class="del">X</button>
+		</li>
+	</ul>
+	<script>
+		/*
+		X버튼을 클릭하면 X버튼이 있는 li태그를 삭제하세요
+		*/
+		//버튼 요소 선택
+		const delBtns = document.querySelectorAll(".del");
+
+		//각 버튼에 클릭 이벤트 등록
+		delBtns.forEach(btn=>{
+			btn.addEventListener("click",function(){
+			
+				btn.parentElement.remove();
+		});
+		})
+	</script>
+</body>
+</html>
