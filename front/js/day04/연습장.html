@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<h1>localStorage 예제</h1>
+	<input type="text" placeholder="학생이름을 입력하세요." id="input">
+	<ul class="list">
+	</ul>
+
+	<script>
+		let objs = [
+			{name : "냠냠", age : 23},
+			{name : "냠", age : 21},
+			{name : "냠냠냠", age : 22},
+		]
+		localStorage.setItem("list", JSON.stringify(objs))
+		
+		const weblist = document.querySelector(".list");
+		const input = document.querySelector("#input");
+		
+		document.addEventListener("DOMContentLoaded", function(){
+			let list = JSON.parse(localStorage.getItem("list"));
+
+			if(list){
+				list = JSON.parse(list);
+			}else{
+				list=[];
+			}
+			list.foreach()
+			
+		})
+	</script>
+</body>
+</html>
