@@ -1,0 +1,93 @@
+a태그
+		- 페이지를 이동할때 사용하는 태그
+		- 기본 값
+			- 글자색 : 방문전 -파랑, 방문후 -보라, 클릭중 -빨강
+			- 밑줄 : 있음
+		- 속성
+      - 쌍태그
+      -속성
+        - href : 이동할 위치를 지정
+          - url 주소입력 (http나 https 포함): 다른 페이지로 이동
+					- url 주소입력: 같은 사이트 다른 페이지로 이동
+          - #아이디명 : 같은 폐이지에서 다른 위치로 이동
+          - tel:전화번호 : 전화번호 연걸 -모바일에서
+          - mailto:이메일주소 : 이메일 작성으로 연결
+        - target : 링크 페이지가 표시될 위치
+          - _self: 기본값,현재창(자주사용)
+          - _blank: 새창이나 새탭(자주사용)
+          - _parent: 부모 프레임
+          - _top: 최상위 조상 프레임
+        - download : 파일을 다운로드 할 때 사용
+          - 값을 지정하지 않으면 서버에 있는 파일명을 그대로 다운로드
+					- 값에 파일명을 지정하면 지정된 파일명으로 다운로드
+          - download:서버에 저장된 파일이름 그대로 다운로드
+          - download="파일명" : 화면에서 지정된 파일 이름으로 다운로드
+        - rel :현재문서와 링크된 페이지의 관계를 나타나는 속성
+          - noopener: 링크된 문서가 현재 문서를 참조하지 못하게 함 - 보안강화
+          - noopeferrer: 링크된 문서에 출처를 전달하지 않음 - 보안강화
+          - nofollow: 검색 엔진이 링크를 따라가지 않도록 지시 -SEO(검색 엔진 최적화)
+          - external:외부 링크
+          - author:저자
+          - help:도움말
+          - license:라이센스 정보
+
+
+//입력 후 엔터를 쳐도 이벤트가 발생하게 하기 위해 추가된 작업
+		form.addEventListener("submit", function(e){
+			//각 태그에 있는 기본 효과를 막아줌
+			e.preventDefault();
+*****************************************************************************
+btn1.addEventListener("click",function(){
+			box1.style.backgroundColor = "yellow"
+		})
+*********************************************************************************************************************
+
+<hr>---줄
+box.classList.contains("fold")---해당 요소가 "fold" 클래스를 가지고 있는지 확인하는 JavaScript 메서드입니다.
+box.classList.toggle("fold")---해당 요소에 "fold" 클래스가 있으면 제거하고, 없으면 추가하는 기능
+list.querySelector("li");---list.querySelector("li") 는 list 요소 내에서 첫 번째 <li> 요소를 선택하는 JavaScript 코드입니다.
+
+**************************************************************************************************************************************
+margin: 0 auto; 중간에 정렬
+글씨긁은 굴은 기울임 (html/day1/04서식태그)
+내려선택(html/day2/03입력태그)
+표 excel표같은거(html/day3/01table)
+표 excel표같은거,더 좋은 표(css/day4/04 테이블속성)
+마우스 동작,클릭동작, (css/day1/07반응상태선택자)
+마우스로 글자선택, 앞에뒤에 글자추가 (css/day1/08문자선택자)
+글자종류 스타일(css/day1/11폰트 속성)
+글자밑에 줄긋기,글자간격,영역을 벗어난(css/day1/12텍스트 속성)
+margin,padding,border,테두리,border스타일,테두리스타일,둥근 테두리,동그라미테두리,원형테두리(css/day2/04 영역속성)
+목록이미지바뀌기(css/day2/07 목록속성)
+float써야할코드(css/day2/08 float)
+calc 계산함수(css/day2/10 연습예제 강사)
+한 박스에 3개 박스넣기(css/day3/03 영역 연습 예제 강사)
+한줄에 같이 나두고 싶으면,inline,inline-block,block(css/day3/04 display속성)
+마우스로 네리갈떄 옆에 고정 (css/day3/05 position 속성)
+서로 겹쳤을 때 누구를 위로 보낼지 결정(css/day3/06 z_index 속성)
+투명도(css/day3/07 opacity 속성)
+네이머의 점만들기(css/day3/08_연습예제1)
+뒤에 그림자같은거(css/day4/03 그림자속성)
+확대/축소하는 함수,회전 시키는 함수(css/day4/05 transform속성)
+스타일이 변경(글자 점점크기),천천히 이동하는거,애니메이션(css/day4/06 transition속성)
+애니메이션(css/day4/07 애니메이션 속성)
+스크롤바(우에 밑에갈수있는거 길죽한),컨텐츠가 요소 크기를 벗어났을 떄 처리 방법(css/day4/08 overflow속성)
+애니메이션돌기(css/day4/09 animate 예제)
+웹을 보는 장치에 따라 보이는 화면이 다른 경우(css/day5/02 반응형 적용하기)
+display : flex 반응형에 적용할 수 있음(css/day5/03 flex 예제)
+웹을 볼때 아무리 딱겨도 중간에 있는 박스(css/day5/04 flex 연습 예제)
+font awesomr 사이트에서 가져오기,아이콘(css/day5/05 아이콘 예제)
+부트스트랩으로 뭐 좀 만들기(css/day5/06 부트스트랩 예제,07 부트스트랩 예제_회원가입)
+부트스트랩으로 웹을 볼때 아무리 딱겨도 변하는 박스만들기(css/day5/08 부트스트랩 예제_grid)
+알림창,입력할수있는 창,확인 취소하는 창(js/day1/03 입출력)
+자료형변환(js/day1/07 자료형변환)
+함수,객체,배열(js/day2)
+객체를 json 형태의 문자열로 변환,json 형태의 문자열을 객체로 변환(js/day2/05 객체_배열)
+Document로 요소선택(예:document.getElementById(아이디명))(js/day2/06 요소 선택)
+이벤트 등록,addEventListener(js/day2/07 이벤트 등록)
+innerText,textContent,html꺼 text변경하기,html꺼 text가져오기,html꺼 코드가져오기,html꺼 코드추가(js/day2/08 DOM 텍스트html)
+getAttribute("value"),setAttribute("value", "456"),태그에 있는 값을 고치기(js/day3/02 속성 가져오기)
+classList추가,제거,있으면 제거, 없으면 추가,있는지 없는지를 알려줌,클래스1를 클래스2로 수정,요소에 번지에 있는 클래스를 가져옴(js/day3/06 DOM_class)
+첫번째 li 삭제,ul 전체 삭제(js/day3/08 DOM_요소삭제)
+
+
