@@ -17,13 +17,36 @@ public class Ex15_HomeWork {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("성적입력 : ");
 		int score = sc.nextInt();
-		char s;
+		char s = ' ';
 		if(score >= 90 && score <= 109) {
 			s = 'A';
 		}else if(score >= 80 && score <= 89) {
 			s = 'B';
 		}else if(score >= 70 && score <= 79) {
-			s = 'B';
+			s = 'C';
+		}else if(score >= 60 && score <= 69) {
+			s = 'D';
+		}else if(score >= -9 && score <= 59) {
+			s = 'F';
+		}else {
+			System.out.println("잘못된 성적");
 		}
-
+		switch(s) {
+		case 'A':
+			System.out.println("학점은"+s+"입니다.");
+			break;
+		case 'B':
+			System.out.println("학점은"+s+"입니다.");
+			break;
+		case 'C':
+			System.out.println("학점은"+s+"입니다.");
+			break;
+		case 'D':
+			System.out.println("학점은"+s+"입니다.");
+			break;
+		case 'F':
+			System.out.println("학점은"+s+"입니다.");
+			break;
+		}
+	}
 }
