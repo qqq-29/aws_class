@@ -34,8 +34,9 @@ public class HW02_Star {
 		 * *****i=5, *=5개
 		 * 		      *=?
 		 * */
+		System.out.println("----------------------------------------------------------------------");
 		for(int i = 1; i <= row; i++) {
-			for(int j = 1; j <= col; j++) {
+			for(int j = 1; j <= i; j++) {
 				System.out.print("*");
 			}
 			System.out.println();
@@ -53,12 +54,44 @@ public class HW02_Star {
 		 *  ****	i=4, 공백=1, *=4
 		 * *****	i=5, 공백=0, *=5
 		 * */
+		System.out.println("----------------------------------------------------------------------");
+		int x = 0;
+		for(int i = row+1; i > 1; i--) {
+			x++;
+			for(int j = i; j > 1; j--) {
+				System.out.print(" ");
+			}
+				for(int t = 1; t <= x; t++) {
+					System.out.print("*");
+				}
+			
+			System.out.println();
+		}
+		
 		/*     *
 		 *    ***
 		 *   *****
 		 *  *******
 		 * *********
 		 * */
+		System.out.println("----------------------------------------------------------------------");
+		int y = 0;
+		int z = 0;
+		for(int i = row+1; i > 1; i--) {
+			y++;
+			z++;
+			for(int j = i; j > 1; j--) {
+				System.out.print(" ");
+			}
+				for(int t = 1; t <= y; t++) {
+					System.out.print("*");
+				}
+				for(int p = 2; p <= z; p++) {
+					System.out.print("*");
+				}
+			
+			System.out.println();
+		}
 
 	}
 
