@@ -1,5 +1,7 @@
 package homework;
 
+import java.util.Scanner;
+
 public class HW04_UpDownGame {
 
 	public static void main(String[] args) {
@@ -14,7 +16,22 @@ public class HW04_UpDownGame {
 		 * 정수입력 : 33
 		 * 정답입니다.
 		 * */
-
+		int min = 1;
+		int max = 100;
+		int x = (int)(Math.random()*(max - min +1)+min);
+		Scanner scan = new Scanner(System.in);
+		System.out.println("UP DOWN GAME 숫자 맞추보세요");
+		for(;;) {
+			int num = scan.nextInt();
+			if(num < x) {
+				System.out.println("UP");
+			}else if(num > x) {
+				System.out.println("DOWN");
+			}else if(num == x) {
+				System.out.println("정답입니다.");
+				break;
+			}
+		}
 	}
 
 }
