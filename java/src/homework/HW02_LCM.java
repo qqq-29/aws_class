@@ -1,6 +1,6 @@
-package day02;
+package homework;
 
-public class HW01_LCM {
+public class HW02_LCM {
 
 
 public static void main(String[] args) {
