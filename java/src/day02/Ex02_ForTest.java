@@ -4,9 +4,9 @@ public class Ex02_ForTest {
 
 	public static void main(String[] args) {
 		// 구구단 2단을 출력하는 코드
-//		for(int i = 1;i <= 9; i++) {
-//			System.out.println("2 X "+i+" = "+(2*i));
-//		}
+		for(int i = 1;i <= 9; i++) {
+			System.out.println("2 X "+i+" = "+(2*i));
+		}
 		
 		//a에서 z까지 출력하는 코드를 작성하세요 97~122
 		for(int i = 97; i <= 122; i++) {
