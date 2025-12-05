@@ -2,27 +2,34 @@ package homework;
 
 import java.util.Scanner;
 
-public class HW08_BaseballGame {
+public class HW09_BaseballGame2 {
 
 	public static void main(String[] args) {
-		/* 1~9사이의 중복되지 않은 3개의 수를생성해서 맞추는 게임
-		 * 규칙
-		 * S : 숫자가 있고 위치가 같음
-		 * B : 숫자가 있고 위치가 다름
-		 * O : 일치하는 숫자가 하나도 없음
-		 * 
-		 * 예시
-		 * 랜덤수 : 1 5 4
-		 * 입력 : 1 2 3
-		 * 1S
-		 * 입력 : 4 5 6
-		 * 1S 1B
-		 * 입력 : 7 8 9
-		 * O
-		 * 입력 : 1 4 5
-		 * 1S 2B
-		 * 입력 : 1 5 4
-		 * 정답입니다.
+		/* 기본 게임 방식은 HW08과 동일한데 기록 관리를 추가
+		 * 관리할 기록은 횟수와 입력한 이니셜
+		 *  메뉴
+		 *  1. 플레이
+		 *  2. 기록 확인
+		 *  3. 종료
+		 *  메뉴 선택 : 1
+		 *  //HW08에 했던 야구 게임이 진행
+		 *  //정답을 맞추면 맞춘 횟수를 출력
+		 *  정답입니다.
+		 *  시도횟수는 4회
+		 *  5등안에 들었습니다. 
+		 *  이니셜을 남겨주세요 : JIK
+		 *  
+		 *  메뉴
+		 *  1. 플레이
+		 *  2. 기록 확인
+		 *  3. 종료
+		 *  메뉴 선택 : 2
+		 *  1. JIK - 4회
+		 *  메뉴
+		 *  1. 플레이
+		 *  2. 기록 확인
+		 *  3. 종료
+		 *  메뉴 선택 : 3
 		 * */
 
 		Scanner scan = new Scanner(System.in);
@@ -32,7 +39,6 @@ public class HW08_BaseballGame {
 		int rightCount = 0;//숫자가 있고 위치가 다름
 		int min = 1;
 		int max = 9;
-		int gameover = 0;
 		for(int i = 0; i < 3; i++) {
 			base[i] = (int)(Math.random()*(max-min+1)+min);
 			for(int j = 0; j<i; j++) {
@@ -53,26 +59,19 @@ public class HW08_BaseballGame {
 			input[0] = scan.nextInt();
 			input[1] = scan.nextInt();
 			input[2] = scan.nextInt();
-			for(int j = 0 ; j<=i; j++) {
-				System.out.println("1");
-				if(rightCount == 3) {
+			for(int j = 0 ; j<i; j++) {
+				if(input[j] == base[i] && i == j) {
 					System.out.println("정답입니다.");
-					gameover = 1;
 					break;
-				}else if(input[j] == base[j]) {
-					System.out.println(input[j] == base[j]);
+				}else if(input[j] == base[i]) {
 					rightCount++;
-					
-				}else if(input[j] == base[j+1]) {
+					break;
+				}else if(i == j) {
 					placeCount++;
-					
+					break;
 				}
 			}
-			if(gameover == 1) {
-				break;
-			}
-			System.out.print(placeCount+"S" + " " + rightCount+"B");
-			System.out.println();
+			System.out.println(rightCount + " " + placeCount);
 		}
 	}
 
