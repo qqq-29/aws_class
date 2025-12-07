@@ -4,35 +4,97 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<style>
+		header{
+			text-align: center;
+		}
+		#form{
+			display: flex;
+			justify-content: center;
+		}
+		#input{
+			margin-right: 12px;
+		}
+		.list{
+			text-align: center;
+			list-style: none;
+		}
+		.list li{
+			margin-top: 8px;
+			display: block;
+		}
+		.removebtnCL{
+			margin-left: 8px;
+		}
+	</style>
 </head>
 <body>
-	<h1>localStorage 예제</h1>
-	<input type="text" placeholder="학생이름을 입력하세요." id="input">
-	<ul class="list">
-	</ul>
-
+	<header>
+		<h1>존경하는 위인 추가하기</h1>
+	</header>
+	<main class="container">
+		<form action="" id="form">
+			<input type="text" id="input">
+			<button type="submit">등록</button>
+		</form>
+		<ul class="list">
+		</ul>
+	</main>
 	<script>
-		let objs = [
-			{name : "냠냠", age : 23},
-			{name : "냠", age : 21},
-			{name : "냠냠냠", age : 22},
-		]
-		localStorage.setItem("list", JSON.stringify(objs))
-		
-		const weblist = document.querySelector(".list");
-		const input = document.querySelector("#input");
-		
-		document.addEventListener("DOMContentLoaded", function(){
-			let list = JSON.parse(localStorage.getItem("list"));
+		const btn = document.querySelector("button")
+		const list = document.querySelector(".list")
+		const retbtn = document.querySelector(".removebtnCL")
+		btn.addEventListener("click", addItem);
 
-			if(list){
-				list = JSON.parse(list);
-			}else{
-				list=[];
+		form.addEventListener("submit", (e) => e.preventDefault());
+
+		function addItem(e){
+			let text = input.value.trim();
+
+			if (text == ""){
+				alert("위인을 입력하세요")
+				return;
 			}
-			list.foreach()
 			
+			let li = document.createElement("li")
+			let span = document.createElement("span")
+			span.classList.add("title")
+			span.textContent = text;
+			// let removebtn = document.createElement("button");
+			// removebtn.textContent = "삭제"
+			// removebtn.classList.add("removebtnCL")
+			li.append(span);
+			li.append(rebtn())
+			list.append(li);
+		}
+
+		function rebtn(){
+			let removebtn = document.createElement("button");
+			removebtn.textContent = "삭제"
+			removebtn.classList.add("removebtnCL")
+			return removebtn
+		}
+
+		list.addEventListener("click", function(e){
+			let el = e.target;
+			if(el.classList.contains("title")){
+				let text = prompt("수정할 내용", el.textContent);
+				if(text){
+					el.textContent = text;
+					el.textContent
+					el.rebtn();
+				}
+			}
 		})
+		list.addEventListener("click", function(e){
+			let el = e.target;
+			if(el.classList.contains("removebtnCL")){
+				el.closest("li").remove();
+			}
+		})
+
+
+
 	</script>
 </body>
 </html>
