@@ -28,8 +28,6 @@ public class HW08_BaseballGame {
 		Scanner scan = new Scanner(System.in);
 		int [] base = new int[3];
 		int [] input = new int[3];
-		int placeCount = 0;//숫자가 있고 위치가 같음 
-		int rightCount = 0;//숫자가 있고 위치가 다름
 		int min = 1;
 		int max = 9;
 		int gameover = 0;
@@ -44,35 +42,38 @@ public class HW08_BaseballGame {
 		}
 
 		
-		for(int i = 0; i<input.length; i++) {
-			System.out.print("랜덤수 : ");
-			for (int t = 0; t<base.length; t++) {
-				System.out.print(base[t]+" ");
+			while(gameover == 0) {
+				for(int i = 0; i<input.length; i++) {
+					System.out.print("랜덤수 : ");
+					for (int t = 0; t<base.length; t++) {
+						System.out.print(base[t]+" ");
+					}
+			    System.out.print("입력: ");
+			    input[0] = scan.nextInt();
+			    input[1] = scan.nextInt();
+			    input[2] = scan.nextInt();
+
+			    int s = 0; // 위치 맞음
+			    int b = 0; // 숫자는 맞지만 위치 틀림
+
+			    for(int j=0; j<3; j++) {
+			        if(input[j] == base[j]) {
+			            s++;
+			        } else if(input[j] == base[(j+1)%3] || input[j] == base[(j+2)%3]) {
+			            b++;
+			        }
+			    }
+
+			    if(s == 3) {
+			        System.out.println("정답입니다!");
+			        gameover++;
+			        break;
+			    } else if(s == 0 && b == 0) {
+			        System.out.println("O");
+			    } else {
+			        System.out.println(s+"S "+b+"B");
+			    }
 			}
-			System.out.print("입력 : ");
-			input[0] = scan.nextInt();
-			input[1] = scan.nextInt();
-			input[2] = scan.nextInt();
-			for(int j = 0 ; j<=i; j++) {
-				System.out.println("1");
-				if(rightCount == 3) {
-					System.out.println("정답입니다.");
-					gameover = 1;
-					break;
-				}else if(input[j] == base[j]) {
-					System.out.println(input[j] == base[j]);
-					rightCount++;
-					
-				}else if(input[j] == base[j+1]) {
-					placeCount++;
-					
-				}
-			}
-			if(gameover == 1) {
-				break;
-			}
-			System.out.print(placeCount+"S" + " " + rightCount+"B");
-			System.out.println();
 		}
 	}
 
