@@ -4,33 +4,58 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<style>
+		h1{
+			text-align: center;
+		}
+		form{
+			display: flex;
+			justify-content: center;
+		}
+		#subbtn{
+			margin-left: 8px;
+		}
+		#list{
+			list-style: none;
+			text-align: center;
+		}
+	</style>
 </head>
 <body>
-	<script>
-		document.write(add(3,5))
-		function add(num1,num2){
-			return num1+num2;
-		}
-		let add = (num1,num2)=>num1+num2;
+	<header>
+		<h1>존경하는 위인 추가하기</h1>
+	</header>
+	<main>
+		<form action="">
+			<input type="text" id="input">
+			<button type="submit" id="subbtn">등록</button>
+		</form>
+		<ul id="list">
 
-		let std1 = {
-			name : "냠냠냠",
-			age : 20,
-			addr : "서울",
-		}
+		</ul>
+		<script>
+			
+			const subbtn = document.querySelector("#subbtn")
+			const list = document.querySelector("#list")
+			const form = document.querySelector("form")
+			const input = document.querySelector("#input")
+			form.addEventListener("submit", (e) => e.preventDefault());
 
-		function student(name, age, addr){
-			return{
-			name : name,
-			age : age,
-			addr : addr,
-		}
-		}
-		let std2 = student("dj",30,"asda");
+			subbtn.addEventListener("click",function(){
+				let inputtext = input.value.trim();
+				if(inputtext == ""){
+					alert("공백으로 등록할수없습니다.")
+				}
+				
+				let li = document.createElement("li");
+				let span = document.createElement("span");
 
-		let arr = [1,2,3,4,5,6];
-		document.write(`배열 : ${arr.join(',')}`)
-
-	</script>
+				span.append(inputtext);
+				li.append(span);
+				list.append(li);
+				
+			})
+		</script>
+	</main>
 </body>
 </html>
