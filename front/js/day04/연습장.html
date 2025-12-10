@@ -26,6 +26,15 @@
 		.removebtnCL{
 			margin-left: 8px;
 		}
+		#img:hover{
+		transform: scale(1.03);
+		}
+		#img{
+			display: flex;
+			justify-content: center;
+			transition: 0.3s;
+		}
+
 	</style>
 </head>
 <body>
@@ -39,6 +48,9 @@
 		</form>
 		<ul class="list">
 		</ul>
+		<span id="img">
+		<img src="../../../static/img/주말1.jpg" id="imgin">
+		</span>
 	</main>
 	<script>
 		const btn = document.querySelector("button")
@@ -66,6 +78,7 @@
 			li.append(span);
 			li.append(rebtn())
 			list.append(li);
+			input.value="";
 		}
 
 		function rebtn(){
@@ -92,7 +105,6 @@
 				el.closest("li").remove();
 			}
 		})
-
 
 
 	</script>
