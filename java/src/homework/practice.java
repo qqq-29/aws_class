@@ -7,19 +7,29 @@ import java.util.Scanner;
 
 
 
-public class 연습 {
+public class practice {
 
 	public static void main(String[] args) {
+		int count = 0;
 		gamefunction gm = new gamefunction2();
 		Scanner scan = new Scanner(System.in);
-		for(int i=0; i<5; i++) {
+		while(count<6) {
 			GamePro gamePro = new GamePro(null, 0);
 			System.out.println("name:");
 			gamePro.setName(scan.nextLine());
+			if(gamePro.getName().isEmpty()) {
+				System.out.println("공백이예요");
+				continue;
+			}
+			if(gamePro.getName().equals(gamePro)) {
+				System.out.println("중복이예요");
+				continue;
+			}
 			System.out.println("score:");
 			gamePro.setScore(scan.nextInt());
 			scan.nextLine();
 			gm.add(gamePro);
+			count++;
 		}
 		
 		gm.printAll();
@@ -60,11 +70,33 @@ class gamefunction2 implements gamefunction{
 		if(!list.contains(gamepro)) {
 			return list.add(gamepro);
 		}
+		//중복 이름 점수 덮어
 		if(list.contains(gamepro)) {
 			int index = list.indexOf(gamepro);
 			list.set(index, gamepro);
 			return false;
 		}
+		//중복 이름
+//		if (list.contains(gamepro)) {
+//	        System.out.println("중복 이름입니다: " + gamepro.getName());
+//	        return false;
+//	    }
+		
+		//중복 이름이 들어오면, 기존 점수와 비교해서 더 큰 점수만 남기고 싶으면
+//		// ① 중복이름 존재 → 점수 비교
+//		int index = list.indexOf(gamepro);  // equals(name) 기준
+//	    if (index >= 0) {
+//	        GamePro existing = list.get(index);
+//
+//	        if (gamepro.getScore() > existing.getScore()) {
+//	            // 새 점수가 더 크면 갱신
+//	            list.set(index, gamepro);
+//	            System.out.println("점수 갱신: " + existing.getName() + " -> " + gamepro.getScore());
+//	        } else {
+//	            System.out.println("기존 점수가 더 높아요: 유지 (" + existing.getScore() + ")");
+//	        }
+//	        return false;
+//	    }
 		return false;
 	}
 
