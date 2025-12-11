@@ -26,14 +26,26 @@
 		.removebtnCL{
 			margin-left: 8px;
 		}
-		#img:hover{
-		transform: scale(1.03);
-		}
-		#img{
-			display: flex;
-			justify-content: center;
-			transition: 0.3s;
-		}
+	#img {
+    width: 150px;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 이미지 세로 가운데 정렬 */
+		margin: 0 auto;
+		border-radius: 5px;
+}
+
+#img img {
+    transition: transform 0.3s;
+    width: 100%;
+    height: 100%;
+}
+
+#img:hover img {
+    transform: scale(1.1);
+}
 
 	</style>
 </head>
@@ -48,9 +60,9 @@
 		</form>
 		<ul class="list">
 		</ul>
-		<span id="img">
+		<div id="img">
 		<img src="../../../static/img/주말1.jpg" id="imgin">
-		</span>
+		</div>
 	</main>
 	<script>
 		const btn = document.querySelector("button")
