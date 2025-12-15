@@ -77,3 +77,144 @@ select * from student limit 0, 2;
 
 # 2페이지에 조회되는 학생 목록
 select * from student limit 2, 2;
+
+#학생들이 1학년에 들어야할 과목을 조회하는 쿼리(distinct중복없이)
+select distinct title from subject where grade = 1;
+
+# 그룹화 => group by
+# 레코드(행)들을 그룹으로 묶어서 처리할 때 사용 => 1학년 1반 1학기 수학 평균
+# 집계함수를 이용하여 조건을 걸 때 having을 사용
+# select * from 
+# where절 
+# groub by 속성명1, 속성명2,... 
+# having 조건
+# order by절 
+# limit절
+
+# 집계함수
+# count(속성명) : 개수
+# count(*)인 경우 모두가 null이 아니면 개수를 셈. => 레코드 개수를 셈
+# count(컬럼명)인 경우 컬럼이 null이면 개수를 안셈
+# sum(속성명) : 합
+# avg(속성명) : 평균
+# min(속성명) : 최소값
+# max(속성명) : 최대값
+
+# 각 학년별 학생수를 조회
+select grade,count(*) 학생수 from student group by grade;
+
+# 모든 학생들 성적의 총점을 계산
+select sj_code 과목번호, sum(score) 총점 from score group by sj_code;
+
+# 각 과목별 평균을 조회 
+select sj_code 과목번호, avg(score) 평균 from score group by sj_code;
+
+# 각 과목별 촤고점, 최하점을 조회
+select sj_code 과목번호, max(score) 최고점, min(score) 최하점 from score group by sj_code;
+
+# 1학년 때 들어야할 과목수를 조회하는 쿼리
+select count(grade) 1학년과목수 from subject where grade = 1; 
+select count(grade) 2학년과목수 from subject where grade = 2; 
+
+# 각학년, 학기별 들어야할 과목수를 조회하는 쿼리
+select count(grade) 1학년과목수 from subject where grade = 1; 
+select count(grade) 2학년과목수 from subject where grade = 2; 
+select grade 학년, semester 학기, count(semester) 1학년1학기과목수 from subject where grade = 1 and semester = 1;
+select count(semester) 1학년2학기과목수 from subject where grade = 1 && semester = 2;
+select count(semester) 2학년1학기과목수 from subject where grade = 2 && semester = 1;
+select count(semester) 2학년2학기과목수 from subject where grade = 2 && semester = 2;
+
+# 평균이 각 학년 학기별 평균이 90이상인 과목들을 조회하는 쿼리
+select sj_code 과목번호, avg(score) 평균
+from score
+
+/*# where avg(score) >= 90 # 실행 시 에러발생. #집계합수는 where절에서 사용 X*/
+group by sj_code
+#having avg(score) >= 90 
+having 평균 >= 90;# 평균대신 avg(score)도가능
+
+/*
+select 컬럼1, 컬럼2, ...
+from 테이블명
+where 조건
+group by 컬럼명1, ...
+having 조건
+order by 컬럼명1 정렬방법, ...
+limit 시작번지, 개수
+*/
+
+/*
+실행순서
+1. from 테이블
+2. where 절
+3. group by 절
+4. having 절
+5. select 컬럼1,...
+6. order by
+7. limit
+- 예외적인 상황
+	- MySQL과 Oracle은 편의를 위해 having절에서 select의 별칭을 사용할 수 있도록 허용
+*/
+
+# JOIN
+# 2개 이상의 테이블을 묶어서 하나의 결과를 만들 때 사용
+# => 설계할 때 정규화 과정을 통해 테이블을 나누기 때문에
+#	 필요한 데이터들이 여러 테이블에 나눠져 있음
+# inner join : 두 테이블의 교집합
+# outer join : 두 테이블의 합집합
+# self join : 자기자신과 join
+
+# innser join
+# select * 속성
+# from 테이블1
+# join 테이블2
+# inner join 테이블2  # inner는 생략 가능
+# on 테이블1.컬럼1 = 테이블2.컬럼2;
+
+# inner join2
+# 테이블1의 컬럼1과 테이블2의 컬럼2의 이름이 같은 경우
+# select * 속성
+# from 테이블1
+# inner join 테이블2  # inner는 생략 가능
+# using(컬럼);
+
+# 과목별 평균(학년, 학기) => 성적이 등록되지 않은 1학년 2학기 과목은 조회가 안됨
+select subject.*, avg(score) 평균 
+from score 
+join subject on score.sj_code = subject.code
+group by sj_code;
+
+# 학생별 성적 평균을 조회하는 쿼리
+# 학년, 반, 번호, 이름, 평균이 조회 => 성적이 등록 안된 1학년1반3번 학생은 조회가 안됨
+select student.*, avg(score) 평균
+from score
+join student on score.st_code = student.code
+group by st_code;
+
+# inner join : 두 테이블에 연결된 데이터가 있을 떄 조회가 됨.
+
+# outer join : 두 테이블에 연결된 데이터가 없어도 조회가 필요할 때 사용.
+# 두 테이블을 연결한 후 연결할 데이터가 없는 쪽은 null처리
+# left join/ right join : 왼쪽/오른쪽 테이블 기준으로 연결
+
+# left join : 테이블1을 기준으로 테이블1 옆에 테이블2를 이어 붙임
+# select * from 테이블1
+# left join 테이블2 on 테이블1.컬럼1 = 테이블2.컬럼2;
+
+# right join : 테이블2을 기준으로 테이블2 옆에 테이블1를 이어 붙임
+# select * from 테이블1
+# right join 테이블2 on 테이블1.컬럼1 = 테이블2.컬럼2;
+
+# 학생별 평균을 조회(성적이 등록되지 않은 학생도 포함)
+select student.*, avg(score) 평균
+from student
+left join score on st_code = student.code
+group by student.code;
+
+# 학생의 성적을 조회(학년,반,번호,이름,학년,학기,과목,성적) => 등록된 모든학생이 조회
+select student.grade 학년, student.class 반, student.num 번호, student.name 이름,
+subject.grade 과목학년, semester 과목학기, title 과목명, score 성적
+from score
+right join student on st_code = student.code
+left join subject on sj_code = subject.code
+
