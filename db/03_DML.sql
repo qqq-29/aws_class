@@ -67,7 +67,8 @@ delete from student
 		grade = 2 and class = 1 and num = 1;
 # 전체 학생 삭제
 delete from student;
-
+delete from score;
+delete from subject;
 
 # 샘플 데이터 추가
 insert into student(grade, class, num, name) values(1, 1, 1, "홍길동");
@@ -89,13 +90,13 @@ insert into subject(grade, semester, title) values(2, 1, "국어"),(2, 1, "수�
 SELECT * FROM sample.student;
 # 1학년 1반 1번 학생의 1학년 1학기 성적 - 국어 : 90, 수학 : 80
 insert into score(st_code, sj_code, score)
-value(13,2,90),(13,3,80);
+value(26,8,90),(26,9,80);
 # 1학년 1반 2번 학생의 1학년 1학기 성적 - 국어 : 100, 수학 : 100
 insert into score(st_code, sj_code, score)
-value(12,2,100),(12,3,100);
+value(22,10,100),(22,11,100);
 # 1학년 2반 1번 학생의 1학년 1학기 성적 - 국어 : 50, 수학 : 100
 insert into score(st_code, sj_code, score)
-value(14,4,50),(14,5,100);
+value(23,10,50),(23,11,100);
 # 2학년 1반 1번 학생의 2학년 1학기 성적 - 국어 : 100, 수학 : 50
 insert into score(st_code, sj_code, score)
-value(16,6,100),(16,7,50);
+value(24,12,100),(24,13,50);
