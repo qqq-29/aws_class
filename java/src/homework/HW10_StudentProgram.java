@@ -168,6 +168,30 @@ public class HW10_StudentProgram {
 		        s1.printSubjects();
 		    }
 		    break;
+//		    ------------------------------------------------
+		case 7 :
+			System.out.println("학생 성적 추가");
+			
+			System.out.print("학생 학년: ");
+		    sg = scan.nextInt();
+		    System.out.print("학생 반: ");
+		    sc = scan.nextInt();
+		    System.out.print("학생 번호: ");
+		    sn = scan.nextInt();
+		    
+		    
+			break;
+		case 8 :
+			System.out.println("학생 성적 삭제");
+			
+			break;
+		case 9 :
+			System.out.println("시스템 종료");
+			
+			break;
+		default:
+			System.out.println("잘못된 입력");
+			break;
 		}
 		System.out.println("검색할 학생 정보 입력");
 		System.out.print("학년 입력: ");
