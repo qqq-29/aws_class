@@ -216,5 +216,34 @@ select student.grade 학년, student.class 반, student.num 번호, student.name
 subject.grade 과목학년, semester 과목학기, title 과목명, score 성적
 from score
 right join student on st_code = student.code
-left join subject on sj_code = subject.code
+left join subject on sj_code = subject.code;
+
+# 서브쿼리
+# 쿼리안에 들어가는 쿼리
+# 장점
+# 쿼리를 구조화 시킴
+# join보다 가독성이 좋음
+# join보다 성능이 좋음
+# 서브쿼리 사용사능 위치
+# - select문에서 컬럼 대신 사용
+# - from에서 테이블 대신 사용
+# - where절에서 특정 값 대신 사용. 결과가 여러개이면 in, 1개이면 = 
+# - having절에서 특정 값 대신 사용.
+# - insert문에서 values 대신에 사용.  insert select문
+# - update문에서 값을 검색해서 바꿀때 사용
+
+# abc123회원이 장바구니에 담은 제품 목록을 조회
+# cart 테이블에 샘플 데이터가 10만개라고 가정
+# product 테이블에 샘플 데이터가 1만개라고 가정
+# abc123회원의 장바구니는 1개라고 가정
+
+# 10만개 행이 join이 발생
+select product.* from cart join product using(code)
+where id = "abc123";
+
+# 1개의 행이 join이 발생
+
+select product.*, ct.amount from 
+(select * from cart where id = "abc123") ct 
+join product using(code);
 
