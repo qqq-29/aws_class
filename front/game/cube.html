@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .scene {
+            width: 300px;
+            height: 300px;
+
+        }
+        
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        
+        .face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 3px solid black;
+            display: flex;
+            color: white;
+
+        }
+
+            .front { transform: translateZ(75px); }
+
+    </style>
+</head>
+<body>
+        <div class="container">
+        <h1>cube</h1>
+        <div class="scene">
+            <div class="cube" id="cube">
+                <div class="face front">앞</div>
+                <div class="face back">뒤</div>
+                <div class="face right">우</div>
+                <div class="face left">죄</div>
+                <div class="face top">위</div>
+                <div class="face bottom">밑</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const cube = document.getElementById('cube');
+        
+        let isDragging = false;
+        let startX, startY;
+        let currentX = -20;
+        let currentY = -30;
+
+        cube.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return; 
+            
+            e.preventDefault();
+            
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            
+            currentY += deltaX;      
+            currentX -= deltaY;    
+            currentX = Math.max(-90, Math.min(90, currentX));
+            updateCubeRotation();  
+            startX = e.clientX;
+            startY = e.clientY;
+
+        });
+        
+        document.addEventListener('mouseup', function() {
+            if (isDragging) {
+                isDragging = false;
+            }
+        });
+        function updateCubeRotation() {
+            cube.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+        }
+    </script>
+</body>
+</html>
