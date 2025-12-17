@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        body {
+            background-color: blue;
+        }
+
         .scene {
             width: 300px;
             height: 300px;
-
+            margin: 0 auto;
         }
         
         .cube {
@@ -16,76 +20,117 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
+            transition: transform 1.2s ease-out; 
         }
+        
         
         .face {
             position: absolute;
             width: 200px;
             height: 200px;
             border: 3px solid black;
-            display: flex;
             color: white;
-
+            text-align: center;
         }
 
-            .front { transform: translateZ(75px); }
-
+        .front { 
+            transform: translateZ(0px); 
+            background-color : aqua;
+        }
+        .back { 
+            transform: translateZ(-205px); 
+            background-color: red;
+        }
+        .left {
+            transform: rotateY(90deg) translateX(102.5px) translateZ(-102.5px);
+            background-color: orange;
+        }
+        .right {
+            transform: rotateY(90deg) translateX(102.5px) translateZ(102.5px);
+            background-color: black;
+        }
+        .up {
+            transform: rotateX(-90deg) translateZ(-102.5px) translatey(100px) translatex(0px);
+            background-color: orangered;
+        }
+        .under {
+            transform: rotateX(-90deg) translateZ(102.5px) translatey(100px) translatex(0px);
+            background-color: darkgreen;
+        }
     </style>
 </head>
 <body>
         <div class="container">
-        <h1>cube</h1>
+        <h1>광기의 큐브</h1>
         <div class="scene">
             <div class="cube" id="cube">
-                <div class="face front">앞</div>
-                <div class="face back">뒤</div>
-                <div class="face right">우</div>
-                <div class="face left">죄</div>
-                <div class="face top">위</div>
-                <div class="face bottom">밑</div>
+                <div class="face front"></div>
+                <div class="face back"></div>
+                <div class="face left"></div>
+                <div class="face right"></div>
+                <div class="face up"></div>
+                <div class="face under"></div>
             </div>
         </div>
+        <button id="btn">굴리기</button>
     </div>
     <script>
         const cube = document.getElementById('cube');
+        const btn = document.getElementById('btn')
         
         let isDragging = false;
         let startX, startY;
         let currentX = -20;
         let currentY = -30;
 
-        cube.addEventListener('mousedown', function(e) {
-            isDragging = true;
+        // cube.addEventListener('mousedown', function(e) {
+        //     isDragging = true;
             
-            startX = e.clientX;
-            startY = e.clientY;
-        });
+        //     startX = e.clientX;
+        //     startY = e.clientY;
+        // });
         
-        document.addEventListener('mousemove', function(e) {
-            if (!isDragging) return; 
+        btn.addEventListener('click', function () {
+            const rollX = Math.floor(Math.random() * 90);
+            const rollY = Math.floor(Math.random() * 90);
             
-            e.preventDefault();
-            
-            const deltaX = e.clientX - startX;
-            const deltaY = e.clientY - startY;
-            
-            currentY += deltaX;      
-            currentX -= deltaY;    
-            currentX = Math.max(-90, Math.min(90, currentX));
-            updateCubeRotation();  
-            startX = e.clientX;
-            startY = e.clientY;
 
+            setTimeout(function () {
+                currentY += 360 + rollY;
+                currentX += 360 + rollX;
+                 }, 5000); // 3000ms = 3초
+
+ 
+            updateCubeRotation();
         });
+
+        fun
+        // document.addEventListener('mousemove', function(e) {
+        //     if (!isDragging) return; 
+            
+        //     e.preventDefault();
+            
+        //     const deltaX = e.clientX - startX;
+        //     const deltaY = e.clientY - startY;
+            
+        //     currentY += deltaX;      
+        //     currentX -= deltaY;    
+        //     currentX = Math.max(-90, Math.min(90, currentX));
+        //     updateCubeRotation();  
+        //     startX = e.clientX;
+        //     startY = e.clientY;
+
+        // });
         
-        document.addEventListener('mouseup', function() {
-            if (isDragging) {
-                isDragging = false;
-            }
-        });
+        // document.addEventListener('mouseup', function() {
+        //     if (isDragging) {
+        //         isDragging = false;
+        //     }
+        // });
         function updateCubeRotation() {
             cube.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
         }
+
     </script>
 </body>
 </html>
