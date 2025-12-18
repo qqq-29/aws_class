@@ -57,7 +57,7 @@ CREATE TABLE `student_major` (
 DROP TABLE IF EXISTS `lecture`;
 
 CREATE TABLE `lecture` (
-	`lt_num`	int	primary KEY,
+	`lt_num`	int	primary KEY auto_increment,
 	`lt_pr_num`	char(11)	NOT NULL,
 	`lt_sj_code`	char(6)	NOT NULL,
 	`lt_year`	int	NOT NULL,
