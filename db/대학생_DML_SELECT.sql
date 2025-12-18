@@ -293,6 +293,9 @@ SELECT * FROM(
 FROM lecture
 ) L # L는 정의한것
 WHERE 순위 = 1;
+# L는 괄호안의 select 결과를 하나의 가상 테이블로 만들고
+# 그 테이블의 이름을 L이라고 붙인 것. 즉, 서브쿼리 결과 테이블의 이름 
+# select * from L where 순위 = 1; 우에 코드는 여기 한줄처럼 같음
 
 # 김교수님(P2025160002)이 지도하는 지도학생 목록을 조회
 SELECT * FROM student WHERE st_pr_num = "P2025160002";
