@@ -42,3 +42,31 @@ REVOKE ALL PRIVILEGES ON WORLD.* FROM 'abc123'@'%';
 # 권한 확인
 SHOW GRANTS FOR 'abc123'@'%';
 
+#------------------------------------------------------------------- 
+CREATE USER 'aaaa'@'%' IDENTIFIED BY 'aaaa';
+
+# 사용자 조회
+SELECT USER, HOST FROM MYSQL.USER;
+
+# 사용자 비번 변경
+# SET PASSWORD FOR '아이디'@'호스트' = '새비번';
+SET PASSWORD FOR 'aaaa'@'%' = 'aaaa';
+
+# 사용자 삭제
+# DROP USER '아이디'@'호스트';
+DROP USER 'aaaa'@'%';
+
+# 사용자 조회
+SELECT USER, HOST FROM MYSQL.USER;
+
+# 권한 부여를 위한 사용자 계정 추가
+CREATE USER 'abc123'@'%' IDENTIFIED BY 'abc123';
+
+# 권한 부여 
+# - 사용자에게 특정 DB의 접근 권한을 부여.
+# - 테이블 추가/수정/삭제, 테이터 추가/수정/삭제/조회 등
+# - SELECT/INSERT/UPDATE/DELETE/CREATE/ALTER/DROP/REFERENCES
+# - ALL PRIVILEGES(모든 권한)
+# GRANT 권한 ON DB명.테이블명 TO '아이디'@'호스트';
+GRANT SELECT ON WORLD.* TO 'abc123'@'%';
+GRANT ALL PRIVILEGES ON WORLD.* TO 'aaaa'@'%';
