@@ -51,9 +51,10 @@ BEGIN
     declare _final int;
     declare _hw int;
     declare _att int;
-    declare _total double;
-    declare _score varchar(2);
+    declare _total double; # 성적을 비율로 반영한 총점
+    declare _score varchar(2); # 학점
     
+    # 예외가 발생하면 이전에 작업한 내용이 반영되지 않게 ROLLBACK
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
 		ROLLBACK;
@@ -61,6 +62,7 @@ BEGIN
 
     START TRANSACTION;
     
+    # 검색을 통해 중간, 기말, 과제, 출석 점수를 가져와서 각 변수에 저장
     set _mid = (select co_mid from course 
 					where co_st_num = _st_num and co_lt_num = _lt_num);
 	set _final = (select co_final from course 
@@ -98,15 +100,21 @@ BEGIN
 		set _score = 'F';
 	end if;
     
+    # 계산한 학점을 데이블에 업데이트
     UPDATE course
     set 
 		co_score = _score
 	where
 		co_st_num = _st_num and co_lt_num = _lt_num;
+	# 지금까지 작업 내용을 반영 (START TRANSACTION;시작한다고 때문에)
     COMMIT;
 END $$
 DELIMITER ;
-    
+
+call score('2025160001', 1);
+call score('2025160001', 2);
+call score('2025160001', 4);
+call score('2025160001', 5);    
 call score('2025160001', 6);
     
     

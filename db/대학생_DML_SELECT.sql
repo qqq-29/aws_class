@@ -303,6 +303,54 @@ SELECT * FROM student WHERE st_pr_num = "P2025160002";
 # 교수별 지도학생 수를 조회
 SELECT  professor.*, st_pr_num,COUNT(st_NUM) FROM student
 	right JOIN professor ON PR_NUM = st_pr_num
-	group by pr_num
+	group by pr_num;
+#*****************************************************************
+# 홍길동(2025160001) 학생이 이수한 총 학점을 조회
+# 이수는 성적이 PASS이거나 F가 아니거나 NULL이 아니면 계산
+# 1
+SELECT co_st_num 학생, sum(sj_point) 총학점 from course 
+	join lecture on lecture.lt_num = course.co_lt_num
+    join subject on subject.sj_code = lecture.lt_sj_code
+    where co_score is not null AND (co_score != 'F' or co_score != 'PASS') 
+    and co_st_num = '2025160001'group by co_st_num;
 
-	
+# 강사:
+SELECT co_st_num 학생, sum(sj_point) 총학점 from course 
+	# 학점이 필요한데 학점은 subject에 있어서 course가 subject에 연결되기 위해
+    # 중간에 lecture를 JOIN
+	join lecture on lecture.lt_num = course.co_lt_num 
+    join subject on subject.sj_code = lecture.lt_sj_code
+    where co_score is not null  # 학기 진행 중
+    #AND (co_score != 'F' or co_score != 'PASS') 
+    AND co_score NOT IN ('F', 'FAIL') # 성적이 나왔지만 이수 못함
+    and co_st_num = '2025160001'group by co_st_num;
+#******************************************************************
+
+# 학생별 총 이수학점을 조회
+# 이수는 성적이 PASS이거나 F가 아니거나 NULL이 아니면 계산
+SELECT st_num 학생, st_name 학생, sum(sj_point) 총학점 
+	from 
+		# 아래 서브쿼리에서 검색 결과는 홍길동 학생의 이수한 수강 정보만 조회
+        # 다른 학생은 성적을 입력 안해서
+		(select * from course
+			where 
+				co_score is not null  # 학기 진행 중
+					AND co_score NOT IN ('F', 'FAIL')) C 
+		join 
+    lecture on lt_num = co_lt_num 
+		join 
+	subject on sj_code = lt_sj_code
+		right JOIN
+	student on st_num = co_st_num
+    group by st_num;
+
+
+
+
+
+
+
+
+
+
+
