@@ -1,0 +1,8 @@
+02 - ddl 
+03 - dml
+04 - 실행순서, distinct 중복된 결과를 제거
+05 - CONCAT,
+06 - 순위, 그룹을 나누고 순위
+07 - 사용자 추가/삭제, 권한 부여/회수
+08 - 트랙잭션 START TRANSACTION /BEGIN / BEGIN WORK 
+	ROLLBACK ROLLBACK TO SAVEPOINT COMMIT
