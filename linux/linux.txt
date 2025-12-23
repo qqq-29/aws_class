@@ -1,0 +1,50 @@
+cd .. 상위폴더
+cd [디렉토리] 지정한 디렉토리로 이동
+clear 화면을 지움
+man 명령 사용 방법을 화면에 출력
+pwd 현재 디렉토리 위치를 확인. 절대 경로를 출력. Print Working Directory
+
+ls[옵션][디렉토리(파일)]:디렉토리 내용 출력
+    - ls -al : 더 자세히보기
+		(l : 심볼링 링크/d : 폴더/r : 읽기권한/w : 쓰기권한/x : 실행권한)
+		첫3개 : 사용자 본인권한
+		두번째3개 : 같은 그룹
+		마지막3개 : 다른 그룹의 사용자
+	ls -r 이름 : 폴더 안에 뭐있는지 보기
+	ls -R 이름 : 폴더 안에 뭐있는지 보기/폴더 안에의 폴더 안에 뭐있는지 보기
+	
+mkdir 이름 : 폴더추가
+	mkdir -p test1/sub1 (-p 반드시있어야 test1폴더추가하고 sub1도 추가합니다)
+rmdir 이름 : 폴더삭제
+	rmdir -p test1/sub1 (test1안에 딱 sub1만있어서 삭제후 test1도 없어짐니다
+	
+cat 파일안에 확인하기
+
+cp 이름 위치 : 위치로 파일을 copy
+
+mv[옵션] 파일1(디렉토리1) 파일2(디렉토리2) : 파일(디렉토리)를 이동하거나 이름을 바꿈
+rm [옵션] 파일(디렉토리) : 파일(디렉토리)를 삭제
+
+-i : 파일2가 있으면 덮어쓸지 물어봄
+cp -i File-01.txt test1/File-01.txt (-i 있으면 확인한후 실행함)
+rm -i testDir2/tmp01.txt ()
+
+touch test.txt (test.txt터치 아니면 test.txt빈파일 생성)
+
+chmod (권한rwx)
+chmod 750(한 숫자 로 권한줌)
+그룹	의미
+u	소유자(User)
+g	그룹(Group)
+o	다른 사용자(Other)
+a	모두(All)
+chmod g+x
+chmod g=x
+chmod g-x
+
+파일입력할려면 touch하고 vim해야돼
+
+adduser abc123 (abc123사용자추가)
+groupadd hi (hi그룹생성)
+usermod -aG hi abc123 (abc123사용자을 hi그룹에 추가)
+groups abc123 (abc123어느그룹에 있는지 확인)
