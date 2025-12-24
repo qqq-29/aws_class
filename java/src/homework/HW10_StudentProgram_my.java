@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import homework.HW10_StudentProgram.Studentfunction2.StudentImfor;
+import homework.HW10_StudentProgram_my.Studentfunction2.StudentImfor;
 
-public class HW10_StudentProgram {
+public class HW10_StudentProgram_my {
 
 	public static void main(String[] args) {
 		/* 학생의 성적을 관리하는 프로그램을 구현하세요.
