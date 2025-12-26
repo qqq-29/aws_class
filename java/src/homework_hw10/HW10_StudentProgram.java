@@ -1,11 +1,15 @@
 package homework_hw10;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class HW10_StudentProgram {
-
+	int ind = 0;
 	private static Scanner scan = new Scanner(System.in);
 	
 	public static void main(String[] args) {
@@ -33,8 +37,30 @@ public class HW10_StudentProgram {
 		 * */
 		int menu = 0;
 		final int EXIT = 9;
+		
 		//학생 정보를 관리하는 리스트
 		List<Student> students = new ArrayList<Student>();
+		//과목 리스트
+		List<Subject> subjects = new ArrayList<Subject>();
+		//
+		String studentsFileName = "student.txt";
+		String subjectsFileName = "subject.txt";
+		
+		try {
+			students = (ArrayList<Student>)load(studentsFileName);
+			
+		}catch(Exception e) {
+			println("학생 목록 불러오기 실패");
+			students = new ArrayList<Student>();
+		}
+		try {
+			subjects = (ArrayList<Subject>)load(subjectsFileName);
+			
+		}catch(Exception e) {
+			println("과목 목록 불러오기 실패");
+			subjects = new ArrayList<Subject>();
+		}
+		
 		
 		do {
 			//메뉴 출력
@@ -52,38 +78,260 @@ public class HW10_StudentProgram {
 //				searchStudent(students);
 				searchStudent2(students);
 				break;
-			case 4: break;
-			case 5: break;
-			case 6: break;
-			case 7: break;
-			case 8: break;
+			case 4: 
+//				addSubject(subjects);
+				addSubject2(subjects);
+				break;
+			case 5: 
+				removeSubject(subjects);
+				break;
+			case 6: 
+				printSubjects(subjects);
+				break;
+			case 7: 
+				addSubjectScore(students, subjects);
+				break;
+			case 8: 
+				removeSubjectScore(students, subjects);
+				break;
 			case EXIT: 
 				exit();
+				save(studentsFileName, students);
+				save(subjectsFileName, subjects);
 				break;
 			default:
 				
 			}
 		}while(menu != EXIT);
 	}
-	//Student클래스의 equals를 활용
-	private static void removeStudent(List<Student> list) {
-		//학생 정보를 입력받아 학생 객체를 생성.
+	
+	private static Object load(String fileName) throws Exception{
+		
+		try(ObjectInputStream ois =
+				new ObjectInputStream(new FileInputStream(fileName))){
+			return ois.readObject()
+					;
+		}catch(Exception e) {
+			throw e;
+		}
+	}
+
+	private static void save(String fileName, Object obj) {
+		
+		try(ObjectOutputStream oos =
+				new ObjectOutputStream(new FileOutputStream(fileName))){
+			oos.writeObject(obj);
+			oos.flush();
+		}catch(Exception e) {
+			println("저장 실패");
+		}
+		
+	}
+
+	private static void removeSubjectScore(List<Student> students, List<Subject> subjects) {
+		//성적을 삭제할 학생의 학년, 반, 번호를 입력
 		Student student = inputStudent(false);
-		//list에 학생 객테가 몇번지에 있는지 확인
-		int index = list.indexOf(student);
-		//학생 정보가 없으면 일치하는 학생이 없습니다. 안내문구 출력후 종료
+		//일치하는 학생이 없으면 안내문 출력후 종료
+		int index = students.indexOf(student);
+		
 		if(index < 0) {
+			println("일치하는 학생이 없습니다");
+			return;
+		}
+		//있으면
+		//과목 정보를 입력
+		Subject subject = inputSubject();
+		//과목 목록에 과목 정보가 없으면 안내문 출력후 종료
+		if(!subjects.contains(subject)) {
+			println("등록되지 않은 과목입니다.");
+			return;
+		}
+		//학생 정보에서 과목 정보를 주면서 성적 목록에서 제거하고,
+		//제거 여부를 알려달라고 함
+		Student selectedStudent = students.get(index);
+		
+		//제거 했으면 제거 안내문 출력
+		if(selectedStudent.removeSubjectScore(subject)) {
+			println("성적을 삭제했습니다.");
+		}
+		
+		//실패했으면 제거 실패 안내문 출력
+		else {
+			println("등록되지 않은 성적입니다.");
+		}
+	}
+
+	private static void addSubjectScore(List<Student> students, List<Subject> subjects) {
+		//성적을 추가할 학생의 학년, 반, 번호를 입력
+		Student student = inputStudent(false);
+		int index = students.indexOf(student);
+		
+		//학생이 없으면 일치하는 학생이 없습니다 출력후 종료
+		//List의 indexOf 활용
+		if(index < 0) {
+			println("일치하는 학생이 없습니다");
+			return;
+		}
+		
+		//과목 성적 정보를 입력(학년, 학기, 과목명, 성적)
+		Subject subject = inputSubject();
+		System.out.println("성적 : ");
+		double score = scan.nextDouble();
+		
+		//기존코드에 추가작업 없이 과목 성적을 추가
+		//0학년 0학기로 한 이유는 subject.getGrade로 학년을 넣어주면 되는데
+		//그러면 코드가 길어져서 간단히 하기위해 0학년으로 대체
+		SubjectScore subjectScore = 
+				new SubjectScore(0, 0, "", score);
+		subjectScore.setSubject(subject);
+		
+		//아랴 코드는 생성자를 추가해서 위 코드 대신 사용할수 있음
+        //SubjectScore subjectScore = new SubjectScore(subject, score);
+		
+		//없는 과목이면 등록되지 않은 과목입니다를 출력후 종료
+		if(!subjects.contains(subject)) {
+			println("등록되지 않은 과목입니다.");
+			return;
+		}
+		
+		//학생 정보에 성적을 추가해서 성공하면
+		//성적을 추가했습니다.
+		//student; 학년, 반, 번호는 있지만 이름과 성적들이 없음
+		Student selectedStudent = students.get(index);
+		//강사가 할 방법
+		//학생정보에게 입력한 성적 정보를 주고 추가하라고 요청 후 성공여부를 알려 달라고함
+		boolean isAdd = selectedStudent.addSubjectScore(subjectScore);
+		
+		if(isAdd) {
+		    println("성적을 추가했습니다.");
+		}
+		//실패하면 성적을 수정했습니다를 출력
+		//실패 => 새로운 추가 실패 => 기존 성적을 수정
+		else {
+			println("성적을 수정했습니다");
+		}
+
+		
+		
+	}
+
+	//문자열 앞뒤로 절취선 추가하는 메서드
+	private static void println(String str) {
+		System.out.println("=====================");
+		System.out.println(str);
+		System.out.println("=====================");
+	}
+	
+	private static void printSubjects(List<Subject> subjects) {
+		
+		//등록된 과목이 없으면 알림 출력(등록되 과목이 없습니다.)
+		if(subjects.isEmpty()) {
+			println("등록되 과목이 없습니다.");
+			return;
+		}
+		System.out.println("=====================");
+		//있으면 과목들을 한줄에 하나씩 출력
+		for(Subject a : subjects) {
+			System.out.println(a);
+		}
+		System.out.println("=====================");
+		
+	}
+
+	private static void removeSubject(List<Subject> subjects) {
+		
+		//학년, 학기, 과목명을 입력
+		Subject subject = inputSubject();
+		//일치하는 정보가 있으면 삭제후 알림(과목이 삭제되었습니다.)
+		if(subjects.remove(subject)) {
 			System.out.println("=====================");
-			System.out.println("일치하는 학생이 없습니다.");
+			System.out.println("과목이 삭제되었습니다.");
 			System.out.println("=====================");
 			return;
 		}
+		//없으면 알림(일치하는 과목이 없습니다.)
+		System.out.println("=====================");
+		System.out.println("일치하는 과목이 없습니다.");
+		System.out.println("=====================");
+		return;
+	}
+
+	private static Subject inputSubject() {
+		//학년, 학기, 과목명을 입력
+		System.out.println("=====================");
+		System.out.print("학년입력 : ");
+		int grade = scan.nextInt();
+		System.out.print("학기입력 : ");
+		int semeter = scan.nextInt();
+		System.out.print("과목입력 : ");
+		String name = scan.next();
+		System.out.println("=====================");
+		
+		return new Subject(grade, semeter, name);
+	}
+	
+	//중복 과목 체크 안함.Subject클래스에 equals를 오버라이딩 하기 전
+//	private static void addSubject(List<Subject> subjects) {
+//		
+//		Subject subject = inputSubject();
+//		
+//		//과목을 과목 목록에 추가
+//		subjects.add(subject);
+//		
+//		//알림 문구 출력
+//		System.out.println("=====================");
+//		System.out.println("과목을 추가했습니다.");
+//		System.out.println("=====================");
+//		
+//	}
+	
+	//중복메서드
+	private static Subject getSubjectBySubjects(List<Subject> subjects
+			, Subject subject) {
+		int index = subjects.indexOf(subject);
+		if(index < 0) {
+			return null;
+		}
+		return subjects.get(index);
+	}
+	
+	//중복 과목 체크 함.Subject클래스에 equals를 오버라이딩 해서.
+	private static void addSubject2(List<Subject> subjects) {
+		
+		 Subject subject = inputSubject();
+		
+		 //subject 중복체크		 
+		
+		if(getSubjectBySubjects(subjects, subject) != null) {
+			System.out.println("=====================");
+			System.out.println("중복된 과목입니다. 다시입력");
+			System.out.println("=====================");
+			return;
+		}
+		
+		//중복이 아니면 과목을 과목 목록에 추가
+		subjects.add(subject);
+			
+			//알림 문구 출력
+			System.out.println("=====================");
+			System.out.println("과목을 추가했습니다.");
+			System.out.println("=====================");
+		
+		
+	}
+	//Student클래스의 equals를 활용
+	private static void removeStudent(List<Student> students) {
+		//학생 정보를 입력받아 학생 객체를 생성.
+		Student student = inputStudent(false);
+
+		//학생 정보가 없으면 일치하는 학생이 없습니다. 안내문구 출력후 종료
+		if(!students.remove(student)) {
+			println("일치하는 학생이 없습니다.");
+			return;
+		}
 		//있으면 list에서 학생 정보가 있는 번지의 객체를 제거후
-			list.remove(index);
 			//학생을 삭제했습니다를 출력
-			System.out.println("=====================");
-			System.out.println("학생을 삭제했습니다.");
-			System.out.println("=====================");
+			println("학생을 삭제했습니다.");
 		
 	}
 	private static void searchStudent(List<Student> list) {

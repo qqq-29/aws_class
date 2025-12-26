@@ -1,12 +1,19 @@
 package homework_hw10;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class SubjectScore {
+public class SubjectScore implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 123L;
 	//다음 필드를 선언하세요.
 	//과목 정보, 성적
 	private Subject subject; 
@@ -29,7 +36,21 @@ public class SubjectScore {
 		subject = new Subject(grade, semeter, name);
 		this.score = score;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SubjectScore other = (SubjectScore) obj;
+		return Objects.equals(subject, other.subject);
+	}
 	
-	//학년, 학기, 과목명, 성적을 이용한 생성자를 추가하세요
+	
+	
+
 	
 }

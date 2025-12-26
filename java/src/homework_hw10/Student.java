@@ -1,5 +1,6 @@
 package homework_hw10;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,8 +10,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Student {
+public class Student implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 123L;
+	
 	//다음 필드를 추가하세요
 	//학생의 학년, 반, 번호, 이름, 과목 성적들
 	private int grade, classNum, num;
@@ -84,6 +90,48 @@ public class Student {
 		Student other = (Student) obj;
 		return classNum == other.classNum && grade == other.grade && num == other.num;
 	}
+
+	public boolean addSubjectScore(SubjectScore subjectScore) {
+		// 등록된 성적인니 확인하기 위해 성적 목록에서 몇번지에 있는지 확인
+		int index = list.indexOf(subjectScore);
+		//없으면(-1번지이면) 성적을 추가 => true를 반화(추가했으니까)
+		if(index < 0) {
+			list.add(subjectScore);
+			return true;
+			//위 두줄을 아래 한줄로 변경 가능
+			//return list.add(subjectScore);
+			
+		}
+		//있으면 기존 성적에 새 점수로 수정 => false를 반화(추가가 아닌 수정했으니까)
+		//기존 성적 정보
+		SubjectScore selectedScore = list.get(index);
+		//기존 성적을 새 성적으로 수정
+		selectedScore.setScore(subjectScore.getScore());
+		
+		//위 두줄을 아래 한줄로 변경 가능
+		//list.set(index, subjectScore);
+		return false;
+	}
+
+	public boolean removeSubjectScore(Subject subject) {
+		
+		//과목 정보를 이용하여 성적 정보를 생성
+		//0학년 0학기 (과목명없음) 0점인 성적 정보를 생성
+		SubjectScore subjectScore = new SubjectScore(0, 0, "", 0);
+		//?학년 ?학기 ?? 0점인 성적으로 변경
+		subjectScore.setSubject(subject);
+		
+		//삭제할 성적 정보를 이용하여 성적 목록에서 제거하고 성공하면 true를 반환
+		//실패하면 false를 반환
+		return list.remove(subjectScore);
+		
+		//아래 코드로 하면 원하는 결과가 안나옴
+		//remove는 objects,equals를 호츌 => 두 객체의 클래스가 다르면 무조건 false
+		//return list.remove(subject);
+		
+	}
+
+
 	
 	
 	
