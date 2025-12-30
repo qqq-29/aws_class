@@ -28,6 +28,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    implementation 'mysql:mysql-connector-java:8.0.16'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:4.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //비밀번호 암호화에서 이미 추가한 경우 새
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+    // 타임리프를 이용하여 sec:를 사용하기 위해 추가
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+이 부분이 가장 중요합니다.
+namespace는 DAO 인터페이스의 전체 경로와 반드시 같아야 함
+
+이걸로 MyBatis가
+👉 “아, 이 XML은 PostDAO랑 연결되는구나” 라고 인식함
+ -->
+<mapper namespace="kr.hi.boot.dao.PostDAO">
+   <!-- 
+  요소						의미
+   id					DAO 메서드 이름과 동일해야 함
+ resultType			    SQL 결과를 어떤 객체로 담을지
+    -->
+    
+    <!-- 
+    1.
+    	- XML의 id = DAO 메서드명 
+    		(이름이 다르면 실행 안 됨 (에러 발생))
+    	
+    2. 
+    	- resultType = 반환 타입
+    		SQL 결과 한 행 → Board
+    		여러 행 → ArrayList<Board>
+    -->
+   	<select id="getBoardList" resultType="Board">
+		select * from board
+   	</select>
+</mapper>
