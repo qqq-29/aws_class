@@ -24,7 +24,7 @@ public class SecurityConfig {
         .authorizeHttpRequests((requests) -> requests
         	//url이 /post/insert/*이면 로그인한 회원 중 역할이 USER인 회원만
         	//접근
-            .requestMatchers("/post/insert/*").hasAuthority(UserRole.USER.name())
+            .requestMatchers("/post/insert").hasAuthority(UserRole.USER.name())
             //ur이 /admin/으로 시작하는 url들은 로그인한 회원 중 역할이 ADMIN인 회원만 접근
             .requestMatchers("/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
             //그외 url은 아무나 접근 가능
