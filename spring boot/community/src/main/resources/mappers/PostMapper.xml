@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.hi.community.dao.PostDAO">
+	
+	<select id="selectPostList" resultType="PostVO">
+		select * from post 
+		<!-- 삭제 안된 게시글을 조회 -->
+		where po_del = 'N'
+		<!-- 최신 게시글이 위에 가도록 정렬 -->
+		order by po_num desc
+	</select>
+    <update id="viewPlus">
+    	update post
+    	 set 
+    	 	po_view = po_view + 1
+    	 where 
+    	 	po_num = #{num} 
+    	 	<!-- 삭제가 안된 게시글 -->
+    	 	and po_del = 'N'
+    	 	
+    </update>
+	<select id="getPost">
+		select * from post where po_num = #{num} and po_del = 'N'
+	</select>
+	<select id="getBoardList" resultType="BoardVO">
+		select * from board
+	</select>
+</mapper>

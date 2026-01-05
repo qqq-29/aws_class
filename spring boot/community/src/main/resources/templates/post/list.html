@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8">
+<title>list</title>
+</head>
+<body>
+	<main layout:fragment="content" class="container">
+		<h1>게시글 목록</h1>
+	<table class="table table-hover">
+	<thead>
+      <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회수</th>
+        <th>추천/비추</th>
+      </tr>
+    </thead>
+      <tr th:each="Post : ${list}">
+      	<td th:text="${Post.po_num}"></td>
+      	<td>
+      		<a th:href="@{/post/detail/{num}(num=${Post.po_num})}" th:text="${Post.po_title}"></a>
+      	</td>
+      	<td th:text="${Post.po_me_id}"></td>
+      	<td th:text="${Post.po_date}"></td>
+      	<td th:text="${Post.po_view}"></td>
+      	<td th:text="${Post.po_up} + '/' + ${Post.po_down}"></td>
+      </tr>
+	</table>
+	<a th:href="@{/post/insert}" class="btn btn-outline-success">게시글 등록</a>
+    </main>
+</body>
+</html>

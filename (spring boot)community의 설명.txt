@@ -1,0 +1,63 @@
+스피링 특징
+- 제어의 역전성
+  - 콘솔 프로그램에서는 우리가 처음부터 끝까지 다 작성
+  - 스프링은 프레임워크가 원하는 양식대로 코드를 작성
+하면 나머지는 스프링이 알아서 동작
+
+- config : 설정 관련 java 파일을 모아놓은 패키지
+  - MyBatisConfig : DB연동 설정
+  - SecurityConfig : 
+    - 로그인/자동로그인/로그아웃
+    - 사용자 권한에 따른 URL 제한
+      => 특정 URL은 권한이 있는 사용자만 접근
+- controlley : 
+  - 사용자가 입력한 URL을 처리하기 위한 컨트롤러 모음
+  - URL에 따라 화면을 연결하던지, 
+    다른 URL로 연결(redirect 또는 forword)
+  - 컨트롤러들은 @Controller
+- service
+  - 컨트롤러가 시킨 일을 하는 서비스 모음
+  - 만드는 이유?
+    - 업무 분담으로 컨트롤러의 구조를 파악하기 쉽게
+    - 재사용
+  - 서비스들은 @Service
+- dao(Date Access Object)
+  - DB에서 데이터를 가져오거나 추가, 수정할 때
+    사용하는 dao들의 모음
+  - 서비스가 다오에게 DB에게 접근하라고 요청
+  - dao는 인터페이스
+    => 구현부가 필요 => Mapper.xml
+- model
+  특별한 기능이 없고, 필드로 이루어지 클래스 모음
+  - vo(Value Object) : 
+    (1) DB에서 가져온 값을 화면에 
+    전달할 때 사용하는 클래스 모음
+    (2) 보통 vo들은 db의 테이블들을 클래스로 만듬
+    (3) 보통 클래스의 필드들은 테이블의 컬럼명과 동일
+  - dto(Data Transfer Object) : 화면에서 입력받은
+    값들을 전달할 때 사용하는 클래스 모음
+  - util : 기능을 도와줄때 필요한 클래스나 열거형의 모음
+
+  - vo, dto 클래스들은 반드시 기본 생성자가 있어야 함
+
+- templates : 화면들 모음
+- static : 정적 파일들 모음
+  - css파일, js파일, 고정 이미지(로고)
+- mappers : Mapper.xml 모음
+  - Mapper
+    - 쿼리로 구성. insert, select, update, delete
+    - select : 반환타입이 반드시
+               필요(resultType,resultMap)
+- application.properties
+  - 스프링 설정과 관련된 정보를 문자열로 관리
+    => 코드에 노출되지 않게 하기 위해
+  - 일반적으로 이 파일은 git에 올리지 않음
+
+- build.gradle
+  - 의존성 주입
+    => 필요한 라이브러리들을 자동으로 받아와서 연결
+  - 자바 버전 관리
+  - 스프링 부트 버전 관리
+  - 라이브러리르 추가하면
+    프로젝트 우클릭>gradle=>refresh gradle project
+    클릭해서 추가한 라이브러리를 받음
