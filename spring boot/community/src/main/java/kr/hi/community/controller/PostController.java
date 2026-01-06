@@ -3,11 +3,15 @@ package kr.hi.community.controller;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import kr.hi.community.model.dto.PostDTO;
+import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
 import kr.hi.community.service.PostService;
@@ -51,6 +55,21 @@ public class PostController {
 		//게시판 목록을 화면에 전송
 		model.addAttribute("boardlist", boardlist);
 		return "post/insert";
+	}
+	
+	@PostMapping("/post/insert")
+	public String postInsertPost(
+			//게시글 등록에 필요한 정보를 받아옴
+			PostDTO postDTO, //제목, 내용, 게시판 번호
+			@AuthenticationPrincipal CustomUser customUser //작성자(로그인한사용자) 정보
+			) {
+		//게시글 정보와 작성자 정보를 서비스에게 주면서 등록하라고 요청
+		boolean result = postService.insertPost(postDTO, customUser);
+		//등록에 성공하면 /post/list로 이동, 실패하면 /post/insert로 이동
+		if(result) {
+			return "redirect:/post/list";
+		}
+		return "redirect:/post/list";
 	}
 
 }

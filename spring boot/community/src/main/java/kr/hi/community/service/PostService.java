@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.hi.community.dao.PostDAO;
+import kr.hi.community.model.dto.PostDTO;
+import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
 
@@ -38,5 +40,83 @@ public class PostService {
 		ArrayList<BoardVO> boardlist = postDAO.getBoardList();
 		return boardlist;
 	}
+	
+	private boolean checkEmpty(String str) {
+		//null이거나
+		if(str == null) {
+			return false;
+		}
+		//공백으로 이루어져 있으면 true를 리턴
+		if(str.trim().isEmpty()) {
+			return true;
+		}
+		//공백이 아닌 한글자라도 있는 경우 false를 리턴
+		return false;
+	}
+
+	public boolean insertPost(PostDTO postDTO, CustomUser customUser) {
+		//게시글 정보 확인 => 입력 안된 값 있는지 확인해서 잘못된게 있으면 false를 반환
+		if(postDTO.getBoard()==0 || checkEmpty(postDTO.getContent()) ||
+			checkEmpty(postDTO.getTitle())) {
+			return false;
+		}
+		//사용자 정보를 확인 => 로그인 됐는지 확인해서 안했으면 false를 반환
+		if(customUser.getUser()==null || customUser == null) {
+			return false;
+		}
+		//게시글의 작성자를 로그인한 회원의 아이디로 수정
+		//BoardVO id = postDAO.getboard(postDTO.getBoard());
+		postDTO.setWriter(customUser.getUsername());
+		//다오에게 게시글 정보를 주면서 등록하라고 시킴
+		try {
+			postDAO.insertPost(postDTO);
+			return true;
+		}catch(Exception e) {
+			//잘못된 게시판 번호를 입력한 경우 게시글 등록에 실패
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public void insertBoard(String name) {
+		//공백으로 되어 있는 경우
+		if(checkEmpty(name)) {
+			return;
+		}
+		//예외 처리 => 게시판명이 중복되면 예외 발생하기 때문에
+		try {
+			postDAO.insertBoard(name);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteBoard(int num) {
+		try {
+			postDAO.deleteBoard(num);
+		}catch(Exception e) {
+			//게시글이 있는 게시판을 삭제하려고 하면 예오가 발생
+			//=> 외래키 옵션에서 게시판번호를 참조하는 게시글이 있는 경우
+			//	 해당 게시판을 삭제하지 못하도록(Restrict)로 설정되어 있기 때문에
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void updateBoard(String name, int num) {
+		if(checkEmpty(name)) {
+			return;
+		}
+		
+		try {
+			postDAO.updateBoard(name,num);
+		}catch(Exception e) {
+			//수정하려는 게시판 명이 중복되면 예외발생
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 }

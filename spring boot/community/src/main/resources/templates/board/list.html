@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html 
+xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body >
+	<main layout:fragment="content" class="container">
+		<h1>게시판 메뉴</h1>
+		<div th:each="board : ${list}" class="d-flex mb-3">
+			<form class="input-group" th:action="@{/admin/board/update/{num}(num=${board.bo_num})}" method="post">
+				<input th:value="${board.bo_name}" type="text" class="form-control" name="board2">
+				<button class="btn btn-outline-warning">수정</button>
+			</form>
+			<form th:action="@{/admin/board/delete/{num}(num=${board.bo_num})}" method="post">
+				<button class="btn btn-outline-danger" type="submit">삭제</button>
+			</form>
+		</div>
+		<form action="/admin/board/list" method="post" class="input-group">
+			<input type="text" class="form-control" name="board">
+			<button class="btn btn-outline-success">등록</button>
+		</form>
+	</main>
+</body>
+</html>

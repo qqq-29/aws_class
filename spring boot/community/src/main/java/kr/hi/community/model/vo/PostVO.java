@@ -15,5 +15,6 @@ public class PostVO {
 	String po_me_id;
 	int po_bo_num;
 	String po_del;
-	
+	//게시판 명을 가져오기 위한 변수를 추가
+	String po_bo_name;
 }

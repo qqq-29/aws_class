@@ -10,7 +10,7 @@
 <body>
 	<main layout:fragment="content" class="container">
 		<h1>게시글 등록</h1>
-		<form action="">
+		<form action="/post/insert" method="post">
 			<div class="mb-3 mt-3">
 				<label for="title" class="form-label">제목:</label> 
 				<input 
@@ -30,10 +30,8 @@
 			</div>
 			<div class="mb-3 mt-3">
 				<label for="content" class="form-label">내용:</label> 
-				<textarea 
-					class="form-control" id="content" placeholder="내용을 입력하세요"
-					name="content" rows="15">
-				</textarea>
+				<textarea class="form-control" id="content" placeholder="내용을 입력하세요"
+					name="content" rows="15"></textarea>
 			</div>
 			<button class="btn btn-outline-success col-12">게시글 등록</button>
 		</form>
