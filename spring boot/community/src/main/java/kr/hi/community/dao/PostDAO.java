@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import kr.hi.community.model.dto.PostDTO;
+import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
 
 public interface PostDAO {
 
-	ArrayList<PostVO> selectPostList();
+	ArrayList<PostVO> selectPostList(@Param("cri")Criteria cri);
 
 	PostVO getPost(@Param("num")int po_num);
 
@@ -28,4 +29,8 @@ public interface PostDAO {
 	void deleteBoard(@Param("deletenum")int num);
 
 	void updateBoard(@Param("updatename")String name, @Param("updatenum")int num);
+
+	int selectTotalCount(@Param("cri")Criteria cri);
+
+	int deletePost(@Param("num")int num);
 }

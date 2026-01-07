@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.hi.community.model.dto.PostDTO;
+import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
+import kr.hi.community.model.util.PageMaker;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
 import kr.hi.community.service.PostService;
@@ -22,14 +24,34 @@ public class PostController {
 	@Autowired
 	PostService postService;
 	
-	@GetMapping("/post/list")
-	public String postlist(Model model) {
-		//서비스에게 게시글 목록을 가져오라고 요청
+	@GetMapping("/post/list/{num}")
+	public String postlist(Model model,
+			@PathVariable("num") int boardNum,
+			//기본생성자를 이용하여 객체를 생성한 후
+			//?되에 변수값이 필드와 일치하면 값을 수정
+			Criteria cri) {
+		//Criteria에 게시판 번호를 넣어줌
+		cri.setBoardNum(boardNum);
+		
+		
+		//서비스에게 게시글 번호에 맞는 게시글 목록을 가져오라고 요청
 		//가져온 게시글 목록을 list에 저장
-		ArrayList<PostVO> list = postService.getPostList();
+		ArrayList<PostVO> list = postService.getPostList(cri);
+		
+		//서비스에게 게시판 목록을 가져오라고 요청
+		ArrayList<BoardVO> boardlist = postService.getBoardList();
+		
+		//서비스에게 페이지정보(검색어, 게시판, 타입)을 주면서 일치하는 게시글 수를 가져오라고 요청
+		int totalCount = postService.getTotalCount(cri);
+		//페이지메이커를 생성
+		PageMaker pm = new PageMaker(3, cri, totalCount);
 		
 		//list를 게시글 목록을 화면에 전송
 		model.addAttribute("list", list);
+		model.addAttribute("boardNum", boardNum);
+		//게시판 목록을 화면에 전송
+		model.addAttribute("boardList", boardlist);
+		model.addAttribute("pm", pm);
 		return "post/list"; // post폴더에 list.html을 화면으로 보내줌
 	}
 	//@PathVariable 주소
@@ -67,9 +89,28 @@ public class PostController {
 		boolean result = postService.insertPost(postDTO, customUser);
 		//등록에 성공하면 /post/list로 이동, 실패하면 /post/insert로 이동
 		if(result) {
-			return "redirect:/post/list";
+			return "redirect:/post/list/" + postDTO.getBoard();
 		}
 		return "redirect:/post/list";
 	}
+	
+	@GetMapping("/post/update/{num}")
+	public String postUpdate() {
+		
+		return "post/update";
+	}
+	
+	@PostMapping("/post/delete/{num}")
+	public String postDelete(
+			@PathVariable("num") int boardNum,
+			//로그인한 회원 정보를 가녀옴
+		    @AuthenticationPrincipal CustomUser customUser) {
+		PostVO post = postService.getPost(boardNum);
+		//삭제요청
+		postService.deletePost(boardNum, customUser);
+		
+		return "redirect:/post/list/" + post.getPo_bo_num();
+	}
+	
 
 }

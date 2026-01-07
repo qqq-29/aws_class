@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.hi.community.dao.PostDAO;
 import kr.hi.community.model.dto.PostDTO;
+import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.PostVO;
@@ -17,10 +18,10 @@ public class PostService {
 	@Autowired
 	PostDAO postDAO;
 	
-	public ArrayList<PostVO> getPostList(){
-		//다오에게 게시글 목록을 가져오라고 요청
-		ArrayList<PostVO> list = postDAO.selectPostList();
-		
+	public ArrayList<PostVO> getPostList(Criteria cri){
+		//다오에게 게시글 번호에 맞는 게시글 목록을 가져오라고 요청
+		ArrayList<PostVO> list = postDAO.selectPostList(cri);
+		//게시글 목록을 반환
 		return list;
 	}
 
@@ -115,6 +116,32 @@ public class PostService {
 			//수정하려는 게시판 명이 중복되면 예외발생
 			e.printStackTrace();
 		}
+		
+	}
+
+	public int getTotalCount(Criteria cri) {
+		if(cri == null) {
+			return 0;
+		}
+		return postDAO.selectTotalCount(cri);
+	}
+
+	public void deletePost(int num, CustomUser customUser) {
+		//로그인이 안된 경우 종료
+		if(customUser == null || customUser.getUsername() == null) {
+			return ;
+		}
+		//작성자 정보를 가져오기위해 게시글 정보를 가져옴
+		PostVO post = postDAO.getPost(num);
+		
+		//작성자가 다르면
+		if(post == null ||
+		   !post.getPo_me_id().equals(customUser.getUsername())) {
+			return;
+		}
+		
+		postDAO.deletePost(num);
+		
 		
 	}
 

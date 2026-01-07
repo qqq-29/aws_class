@@ -1,41 +1,94 @@
 <!DOCTYPE html>
-<html 
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	layout:decorate="~{layout/layout.html}">
 <head>
 <meta charset="UTF-8">
-<title>list</title>
+<title>게시글 목록</title>
 </head>
 <body>
 	<main layout:fragment="content" class="container">
 		<h1>게시글 목록</h1>
-	<table class="table table-hover">
-	<thead>
-      <tr>
-        <th>번호</th>
-        <th>게시판</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>작성일</th>
-        <th>조회수</th>
-        <th>추천/비추</th>
-      </tr>
-    </thead>
-      <tr th:each="Post : ${list}">
-      	<td th:text="${Post.po_num}"></td>
-      	<td th:text="${Post.po_bo_name}"></td>
-      	<td>
-      		<a th:href="@{/post/detail/{num}(num=${Post.po_num})}" th:text="${Post.po_title}"></a>
-      	</td>
-      	<td th:text="${Post.po_me_id}"></td>
-      	<td th:text="${Post.po_date}"></td>
-      	<td th:text="${Post.po_view}"></td>
-      	<td th:text="${Post.po_up} + '/' + ${Post.po_down}"></td>
-      </tr>
-	</table>
-	<a th:href="@{/post/insert}" class="btn btn-outline-success">게시글 등록</a>
-    </main>
+		<hr>
+		<div class="clearfix">
+			<a href="/post/list/0" class="btn float-start me-2"
+				th:classappend="${boardNum == 0} ? 'btn-success' : 'btn-outline-success'">전체</a>
+			<a th:each="board : ${boardList}"
+				th:href="@{/post/list/{num}(num=${board.bo_num})}"
+				th:text="${board.bo_name}" class="btn float-start me-2"
+				th:classappend="${boardNum == board.bo_num} ? 'btn-success' : 'btn-outline-success'">전체</a>
+		</div>
+		<hr>
+		<form th:action="@{/post/list/{num}(num=${boardNum})}" method="get"
+			class="input-group">
+			<select class="form-control" name="type">
+				<option value="0" th:selected="${pm.cri.type == 0}">전체</option>
+				<option value="1" th:selected="${pm.cri.type == 1}">제목 + 내용</option>
+				<option value="2" th:selected="${pm.cri.type == 2}">작성자</option>
+			</select> 
+			<input class="form-control" name="search"
+				th:value="${pm.cri.search}">
+			<button class="btn btn-outline-success">검색</button>
+		</form>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>게시판</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th>조회수</th>
+					<th>추천/비추</th>
+				</tr>
+			</thead>
+			<tr th:each="Post : ${list}">
+				<td th:text="${Post.po_num}"></td>
+				<td th:text="${Post.po_bo_name}"></td>
+				<td><a th:href="@{/post/detail/{num}(num=${Post.po_num})}"
+					th:text="${Post.po_title}"></a></td>
+				<td><a th:href="@{/post/list/{num}(num=${boardNum},
+						type=${2},search=${Post.po_me_id})}" 
+					th:text="${Post.po_me_id}"></a></td>
+				<td th:text="${Post.po_date}"></td>
+				<td th:text="${Post.po_view}"></td>
+				<td th:text="${Post.po_up} + '/' + ${Post.po_down}"></td>
+			</tr>
+			<tr th:if="${list.isEmpty()}">
+				<th colspan="7" class="text-center">등록된 게시글이 없습니다.</th>
+			</tr>
+		</table>
+		<ul class="pagination justify-content-center">
+			<li class="page-item" th:if="${pm.prev}">
+				<a class="page-link"
+					th:href="@{/post/list/{num}(num=${boardNum},
+						page=${pm.endPage-1},
+						type=${pm.cri.type},
+						search=${pm.cri.search})}">이전</a>
+			</li>
+			<li class="page-item" 
+			th:each="num : ${#numbers.sequence(pm.startPage, pm.endPage)}">
+				<a class="page-link"
+					th:href="@{/post/list/{num}(num=${boardNum},
+						page=${num},
+						type=${pm.cri.type},
+						search=${pm.cri.search})}"
+					th:text="${num}"
+					th:classappend="${num == pm.cri.page}?'active':''" 
+					><!-- th:classappend="${num == pm.cri.page}?'active':''" 이것은 선택하는 패키지색갈주는거예요 -->
+					</a>
+			</li>
+			<li class="page-item" th:if="${pm.next}">
+				<a class="page-link"
+					th:href="@{/post/list/{num}(num=${boardNum},
+						page=${pm.endPage+1},
+						type=${pm.cri.type},
+						search=${pm.cri.search})}">다음</a>
+			</li>
+		</ul>
+		<a th:href="@{/post/insert}" class="btn btn-outline-success">게시글
+			등록</a>
+	</main>
 </body>
 </html>
