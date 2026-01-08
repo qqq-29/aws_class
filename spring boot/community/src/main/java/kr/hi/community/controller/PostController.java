@@ -1,6 +1,7 @@
 package kr.hi.community.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,12 +10,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.hi.community.model.dto.PostDTO;
 import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.util.PageMaker;
 import kr.hi.community.model.vo.BoardVO;
+import kr.hi.community.model.vo.FileVO;
 import kr.hi.community.model.vo.PostVO;
 import kr.hi.community.service.PostService;
 
@@ -64,8 +68,15 @@ public class PostController {
 		//게시글 번호(기본키)를 이용하여 게시글을 조회하면? => 최대 1개(왜?)
 		//기본키이니까 => 기본키의 정의 => 기본키로 검색하면 최대 1행이 조회되는 컬럼
 		PostVO post = postService.getPost(po_num);
+		
+		
+		//서비스에게 게시글 번호를 주면서 첨부파일을 가져오라고 요청
+		List<FileVO> files = postService.getFileList(po_num);
+		
 		//가져온 게시글을 화면에 전달
 		model.addAttribute("post", post);
+		//가져온 첨부파일 목록을 화면에 전달
+		model.addAttribute("files", files);
 		return "post/detail";
 	}
 	
@@ -83,10 +94,11 @@ public class PostController {
 	public String postInsertPost(
 			//게시글 등록에 필요한 정보를 받아옴
 			PostDTO postDTO, //제목, 내용, 게시판 번호
-			@AuthenticationPrincipal CustomUser customUser //작성자(로그인한사용자) 정보
+			@AuthenticationPrincipal CustomUser customUser, //작성자(로그인한사용자) 정보
+			@RequestParam("files") List<MultipartFile> files
 			) {
-		//게시글 정보와 작성자 정보를 서비스에게 주면서 등록하라고 요청
-		boolean result = postService.insertPost(postDTO, customUser);
+		//게시글 정보와 작성자 정보와 첨부파일 정보를 서비스에게 주면서 등록하라고 요청
+		boolean result = postService.insertPost(postDTO, customUser, files);
 		//등록에 성공하면 /post/list로 이동, 실패하면 /post/insert로 이동
 		if(result) {
 			return "redirect:/post/list/" + postDTO.getBoard();
@@ -95,8 +107,30 @@ public class PostController {
 	}
 	
 	@GetMapping("/post/update/{num}")
-	public String postUpdate() {
+	public String postUpdate(
+		@PathVariable("num")int postNum, Model model) {
 		
+		//서비스에게 게시글 번호(postNum)를 주면서 게시글을 가져오라고 요청
+		//게시글 객체 = 서비스.메서드명(게시글번호);
+		//- 게시글에 해당하는 클래스 : PostVO
+		//- 게시글 번호 : postNum
+		//- 메서드명은 적당히 작성하면 되는데, 이미 구현된 getPost를 가져오면 새로 추가
+		//  하지 않아도 됨
+		//- 객체명은 적당히 작성하면 됨
+		PostVO post = postService.getPost(postNum);
+		
+		//서비스에게 게시글 번호를 주면서 첨부파일 목록을 가져오라고 요청
+		List<FileVO> files = postService.getFileList(postNum);
+		
+		//서비스에게 A와 B를 주면서 ~~을 시킴
+		//=> 서비스.메서드명(A, B);
+		//서비스에게 A와 B를 주면서 ~~을 가져오라고 요청
+		//=> 클래스명 객체 = 서비스.메서드(A, B); 
+		
+		//가져온 게시글을 화면에 전달
+		model.addAttribute("post", post);
+		model.addAttribute("files", files);
+
 		return "post/update";
 	}
 	
@@ -111,6 +145,37 @@ public class PostController {
 		
 		return "redirect:/post/list/" + post.getPo_bo_num();
 	}
+	
+	@PostMapping("/post/update/{num}")
+	public String postUpdatePost(
+			// - 게시글 번호를 가져옴
+			@PathVariable("num") int postNum,
+			//- 화면에서 보낸 제목과 내용을 가져옴
+			//방법1. 각각 가져옴
+			//@RequestParam("title")String title,
+			//@RequestParam("content")String content,
+			//화면에서 보낸 title과 PostDTO에 멤버변수 title이 이름이 같기 때문에
+			//자동으로 화면에서 보낸 제목을 넣어줌
+			//방법2. DTO에 한번에 가져옴
+			PostDTO postDTO, 
+			@AuthenticationPrincipal CustomUser customUser 
+			) {
+		//- 서비스에게 게시글정보와(게시글번호, 제목, 내용) 사용자 정보를
+		//  주면서 수정하라고 요청
+		//서비스에게 A와 B를 주면서 ~~을 시킴
+		//=> 서비스.메서드명(A, B);
+		//서비스에게 게시글정보와 사용자 정보를 주면서
+		//서비스.메서드명 (게시글정보, 사용자정보);
+		
+		//방법1. 제목, 내용 각각
+		//postService.postUpdatePost(postDTO, customUser, postNum);
+		
+		//방법2. 제목, 내용을 DTO에 담아서  PostDTO에 postNum을 추가
+		postDTO.setPostNum(postNum);
+		postService.postUpdatePost2(postDTO, customUser);
+		
+		return "redirect:/post/detail/{num}";
+}
 	
 
 }

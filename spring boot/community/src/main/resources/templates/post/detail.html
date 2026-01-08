@@ -26,6 +26,15 @@
 				<div  class="form-control" th:text="${post.po_content}"
 					style="min-height: 400px;"></div>
 			</div>
+			<div class="mb-3" th:if="${!files.isEmpty()}">
+				<label>첨부파일([[${files.size()}]])</label>
+				<a th:each="file : ${files}"
+					th:href="@{|/download/${file.fi_name}|}"
+					th:text="${file.fi_ori_name}"
+					class="form-control mb-3"
+					th:download="${file.fi_ori_name}"
+					></a>
+			</div>
 			<!-- 삭제버튼 추가 : 게시글 작성자만 삭제버튼이 보임 -->
 			<form 
 				th:if="${#authentication.name == post.po_me_id}"
