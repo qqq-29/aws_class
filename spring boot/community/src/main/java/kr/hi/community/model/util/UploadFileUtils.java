@@ -25,7 +25,7 @@ public class UploadFileUtils {
 	
     public static String uploadFile(String uploadPath, MultipartFile file) throws Exception {
 		    // 1. 기본적인 Null 체크 및 파일 존재 여부 확인 (방어 코드)
-		    if (file == null || file.isEmpty()) {
+		    if (file == null) {
 		        throw new IllegalArgumentException("업로드할 파일이 존재하지 않습니다.");
 		    }
 		    

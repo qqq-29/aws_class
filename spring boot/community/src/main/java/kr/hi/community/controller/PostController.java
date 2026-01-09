@@ -1,18 +1,25 @@
 package kr.hi.community.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.hi.community.model.dto.LikeDTO;
 import kr.hi.community.model.dto.PostDTO;
 import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
@@ -158,8 +165,13 @@ public class PostController {
 			//자동으로 화면에서 보낸 제목을 넣어줌
 			//방법2. DTO에 한번에 가져옴
 			PostDTO postDTO, 
-			@AuthenticationPrincipal CustomUser customUser 
+			@AuthenticationPrincipal CustomUser customUser,
+			@RequestParam("files") List<MultipartFile> files,
+			@RequestParam(value="delFileNums", 
+			required = false/*삭제할 첨부가 없는 경우를 처리*/) 
+			List<Integer> delFileNums
 			) {
+
 		//- 서비스에게 게시글정보와(게시글번호, 제목, 내용) 사용자 정보를
 		//  주면서 수정하라고 요청
 		//서비스에게 A와 B를 주면서 ~~을 시킴
@@ -172,10 +184,62 @@ public class PostController {
 		
 		//방법2. 제목, 내용을 DTO에 담아서  PostDTO에 postNum을 추가
 		postDTO.setPostNum(postNum);
-		postService.postUpdatePost2(postDTO, customUser);
+		postService.postUpdatePost2(postDTO, customUser, files, delFileNums);
 		
 		return "redirect:/post/detail/{num}";
 }
+		
+	@PostMapping("/post/like")
+	//리턴값을 뷰리졸버로 분석하지 않고 리턴값을 수순하게 화면으로 전송
+	@ResponseBody
+	public ResponseEntity<String> postLike(
+		// - 화면에서 보낸 게시글 번호와 상태를 가져옴
+		@RequestBody LikeDTO like,
+		// - 로그인한 사용자 정보를 가져옴
+		@AuthenticationPrincipal CustomUser customUser
+		){
+		// - 서비스에게 게시글번호와 상태, 사용자 정보를 주면서 추천/비추천
+		//    진행하고 결과를 가져오라고 요청
+		try {
+			String result = postService.updateLike(like, customUser);
+			//게시글의 추천/비추천 수를 변경
+			postService.updateBoardLike(like.getPostNum());
+			return ResponseEntity.ok(result);
+		}catch(Exception e) {
+			//로그인 안했을 때
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(e.getMessage());
+		}
+	}
 	
-
+	@GetMapping("/post/like/count/{num}")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> postLikeCount(
+			HashMap<String, Object> map,
+			@PathVariable("num")int postNum) {
+		//HashMap<String, Object> map = new HashMap<String, Object>();
+		//- 서비스에게 게시글 번호와 추천(1)을 주면서 추천수를 가져오라고 요청
+		//- 서비스에게 게시글 번호와 비추천(-1)을 주면서 비추천수를 가져오라고 요청
+		//추천수 = 서비스.일치하는추천정보수가져와(게시글번호, 상태(1));
+		int up = postService.getLikeCount(postNum, 1);
+		//비추천수 = 서비스.일치하는추천정보수가져와(게시글번호, 상태(-1));
+		int down = postService.getLikeCount(postNum, -1);
+		
+		map.put("up", up);
+		map.put("down", down);
+		return ResponseEntity.ok(map);
+	}
+		
+	@GetMapping("/post/like/check/{num}")
+	public ResponseEntity<Integer> postLikeCheck(
+			@PathVariable("num")int postNum,
+			@AuthenticationPrincipal CustomUser customUser){
+		
+		//다오에게 게시글 번호와 사용자 정보를 줄테니 해당 게시글의 추천상태를 가져와줘
+		//추천상태 = 다오야.게시글의추천상태를 알려줘(게시글번호, 사용자정보);
+		int state = postService.getLikeState(postNum, customUser);
+		
+		return ResponseEntity.ok(state);
+	}
 }
