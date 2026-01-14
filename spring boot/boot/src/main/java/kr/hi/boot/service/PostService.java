@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import kr.hi.boot.dao.PostDAO;
 import kr.hi.boot.model.dto.PostDTO;
+import kr.hi.boot.model.util.Criteria;
 import kr.hi.boot.model.util.CustomUser;
+import kr.hi.boot.model.util.PageMaker;
 import kr.hi.boot.model.vo.Board;
 import kr.hi.boot.model.vo.Member;
 import kr.hi.boot.model.vo.Post;
@@ -21,6 +23,23 @@ public class PostService {
 	public ArrayList<Board> getBoardList() {
 
 		return postDAO.getBoardList();
+	}
+	
+	public PageMaker getPageMaker(Criteria cri) {
+//		- 한 페이지네이션의 최대 페이지수는 3개로 설정
+		int displayPageNum = 3;
+		
+//		- 다오에게 현재 페이지 정보를 주면서 페이지 정보와 일치하는 게시글
+//		  전체 수를 가져오라고 요청
+//		게시글수 = 다오야.게시글전체수를 가져와(현재페이지정보)
+		int count = postDAO.selectPostListCount(cri);
+		
+//		- 최대 페이지수, 총 게시글수, 현재 페이지정보를 이용하여
+//		  PageMaker클래스 객체를 생성후 반환
+		PageMaker pm =
+		//new PageMaker(한 페이지네이션의 최대 페이지수, 현재페이지정보, 현재페이지정보에맞는전체컨텐츠수)
+		 new PageMaker(displayPageNum, cri, count);
+		return pm;
 	}
 	
 	public void insertBoard(String name) {
@@ -55,8 +74,8 @@ public class PostService {
 	
 	}
 	
-	public ArrayList<Post> getPostList(){
-		return postDAO.getPostList();
+	public ArrayList<Post> getPostList(Criteria cri){
+		return postDAO.getPostList(cri);
 	}
 
 	public Post getPost(int num) {
@@ -100,5 +119,6 @@ public class PostService {
 		postDAO.updatePostView(num);
 		
 	}
+	
 
 }
