@@ -52,4 +52,10 @@ public interface PostDAO {
 	void updatePostView(@Param("num")int num);
 
 	int selectPostListCount(@Param("cri")Criteria cri);
+
+	void deletePost(@Param("poNum")int poNum);
+	//게시글번호를 이용하여 제목과 내용을 수정하는 쿼리 작성
+	void updatePost(@Param("poNum")int ponum, @Param("dto")PostDTO dto);
+
+
 }

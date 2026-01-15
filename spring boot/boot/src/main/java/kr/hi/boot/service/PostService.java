@@ -119,6 +119,58 @@ public class PostService {
 		postDAO.updatePostView(num);
 		
 	}
+
+	public void deletePost(CustomUser customUser, int poNum) {
+		// 사용자 정보가 로그인이 안되어 있으면 종료
+		if (customUser == null) {
+			return;
+		}
+		// 사용자가 작성자인지 확인
+		// 게시글번호를 이용하여 게시글을 가져옴
+		//=>다오에게 게시글 번호를 주면서 게시글을 가져오라고 요청
+		//게시글 = 다오야.게시글가져와(게시글번호);
+		Post post = postDAO.getPost(poNum);		
+			// 게시글이 없으면 종료
+			//게시글 작성자 아이디
+		String writer = post.getPo_me_id();
+			//사용자 아이디
+		String id = customUser.getUsername();
+			// 게시글 작성자와 사용자아이디를 비교하여 다르면 종료
+		if(post == null || !writer.equals(id)) {
+			return;
+		}
+//		- 다오에게 게시글 번호를 주면서 삭제하라고 요청
+		postDAO.deletePost(poNum);
+		
+	}
+
+	public void updatePost(int ponum, CustomUser user, PostDTO dto) {
+		//제목, 내용이 비었는 확인해서 비었으면 종료
+		if(dto == null || 
+		   dto.getTitle().isBlank() ||
+		   dto.getContent().isBlank()) {
+			return;
+		}
+		//사용자가 로그인 안되면 종료
+		if(user == null) {
+			return;
+		}
+		
+//		작성자가와 사용자가 다르면 종료
+//		  - 다오에게 게시글번호 주면서 게시글 가져오라고 요청
+//		  - 게시글이 없으면 종료
+//		  - 게시글의 작성자와 사용자 아이디가 다르면 종료
+		Post post = postDAO.getPost(ponum);
+		if(post == null ) {
+			return;
+		}
+		if(!user.getUsername().equals(post.getPo_me_id())) {
+			return;
+		}
+		//다오에게 게시글번호, 제목, 내용을 주면서 수정하라고 요청
+		postDAO.updatePost(ponum, dto);
+		
+	}
 	
 
 }

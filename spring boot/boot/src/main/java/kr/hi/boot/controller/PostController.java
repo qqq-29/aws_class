@@ -78,4 +78,45 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 
+	@PostMapping("/post/delete/{num}")
+	public String postDelete(
+//								- url로 넘겨준 게시글 번호를 가져옴
+								@PathVariable("num")int poNum,
+//								- 로그인한 사용자 정보를 가져옴
+								@AuthenticationPrincipal CustomUser customUser) {
+//		- 서비스에게 게시글 번호와 사용자 정보를 주면서 삭제하라고 요청
+		postService.deletePost(customUser, poNum);
+		
+		return "redirect:/post/list";
+	}
+	
+	@GetMapping("/post/update/{num}")
+	public String postUpdate(
+			//- 화면에서 보낸 게시글 번호를 가져옴
+			@PathVariable("num")int num,
+			Model model) {
+		//- 서비스에게 게시글 번호를 주면서 게시글을 가져오라고 요청
+		Post post = postService.getPost(num);
+		//- 가져온 게시글을 화면에 전달
+		//model.addAttribute("화면에쓸이름", 게시글);
+		model.addAttribute("post", post);
+		
+		return "post/update";
+	}
+	
+	@PostMapping("/post/update/{num}")
+	public String postUpdate(
+			//url에 있는 게시글 번호를 가져옴
+			@PathVariable("num")int ponum,
+			//로그인한 사용자 정보 가져옴
+			@AuthenticationPrincipal CustomUser user,
+			//화면에서 보낸 제목과 내용을 가져옴
+			// @RequestParam("title")String title,
+			// @RequestParam("content")String content) 
+			PostDTO dto){
+		//서비스에게 게시글번호, 제목, 내용, 작성자 정보를 주면서 수정하라고
+		postService.updatePost(ponum,user,dto);
+		
+		return "redirect:/post/detail/{num}";
+	}
 }
