@@ -99,6 +99,32 @@ private final CommentDAO commentDAO;
 		return true;
 	}
 
+	public String updateComment(int coNum, Comment comment, CustomUser user) {
+		//- 내용이 비었는지 체크하여 비었으면 댓글을 입력하세요를 반환
+		if(comment == null || comment.getContent().isBlank()) {
+			return "댓글을 입력하세요.";
+		}
+		//- 로그인 안했으면 로그인이 필요한 서비스입니다를 반환
+		if(user == null) {
+			return "로그인이 필요한 서비스입니다.";
+		}
+		//- 작성자가 아니면 작성자가 아닙니다를 반환
+		String id = user.getUsername();
+		if(!isWriter(coNum, id)) {
+			return "작성자가 아닙니다";
+		}
+		//- 다오에게 댓글번호와 내용을 주면서 수정하라고 요청하고 결과를 가져옴
+		boolean result = commentDAO.updateComment(coNum, comment);
+		//- 수정햇으면 댓글을 수정했습니다를 반환
+		//- 안했으면 댓글을 수정하지 못했습니다를 반환
+		if(result) {
+			return "수정했습니다.";
+		}else {
+			return "수정하지 못했습니다.";
+		}
+		
+	}
+
 
 
 }
