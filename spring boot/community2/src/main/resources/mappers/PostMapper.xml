@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.hi.community.dao.PostDAO">
+    
+    <!-- 
+    id에는 dao의 메서드명을 입력. 오타 발생시 예외가 발생
+    ~~~(not found) 예외 발생  -->
+    <select id="selectPostList" resultType="PostVO">
+    	select 
+    		post.*, bo_name po_bo_name, 
+    		ifnull(po_comment_count, 0) po_comment_count 
+    	from 
+    		post 
+    	join 
+    		board 
+    	on po_bo_num = bo_num
+    	<!-- 댓글이 없을 수 있으니 outer join -->
+    	left join (select 
+		        co_po_num, COUNT(*) po_comment_count
+		    from
+		        comment
+		    group by co_po_num) co 
+		on co_po_num = po_num
+    	<!-- 삭제 안된 게시글을 조회 -->
+    	where po_del = 'N'
+    	<!-- 전체 게시판이 아닌 경우 -->
+    	<if test="cri.boardNum != 0">
+    		and po_bo_num = #{cri.boardNum}
+    	</if>
+    	<!-- 제목 또는 내용으로 검색하는 경우 -->
+    	<if test="cri.type == 1">
+    		and (
+    			<!-- '%검색어%'로 만들기 위해 concat을 활용 -->
+    			po_title like concat('%', #{cri.search}, '%')
+    			or po_content like concat('%', #{cri.search}, '%')
+    		)
+    	</if>
+    	<!-- 작성자로 검색하는 경우 -->
+    	<if test="cri.type == 2">
+    		and po_me_id = #{cri.search}
+    	</if>
+    	<!-- 제목 또는 내용 또는 작성자로 검색하는 경우 -->
+    	<if test="cri.type == 0">
+    		and (
+    			<!-- '%검색어%'로 만들기 위해 concat을 활용 -->
+    			po_title like concat('%', #{cri.search}, '%')
+    			or po_content like concat('%', #{cri.search}, '%')
+    			or po_me_id = #{cri.search}
+    		)
+    	</if>
+    	<!-- 최신 게시글이 위에 가도록 정렬 -->
+    	order by po_num desc
+    	<!-- 페이지에 맞게 잘라서 가져옴 -->
+    	<!-- cri.pageStart를 하면 실제는 cri.getPageStart()를 호출 -->
+    	limit #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+    <update id="updateView">
+    	update post
+    	set
+    		<!-- 조회수 증가 -->
+    		po_view = po_view + 1
+    	where
+    		po_num = #{num} 
+    		<!-- 삭제가 안된 게시글 -->
+    		and po_del = 'N' 
+    </update>
+    
+    <select id="selectPost" resultType="PostVO">
+    	select * from post
+    	where po_num = #{num}
+    	<!-- 삭제가 안된 게시글을 가져옴 --> 
+    	and po_del = 'N'
+    </select>
+    <select id="selectBoardList" resultType="BoardVO">
+    	select * from board
+    </select>
+    <!-- 
+    데이터 추가 후 추가한 데이터의 기본키값을 가져올 때
+    useGeneratedKeys와 keyProperty를 이용 
+     -->
+    <insert id="insertPost" 
+    	useGeneratedKeys="true"
+    	keyProperty="post.postNum">
+    	insert into post(po_title, po_content, po_me_id, po_bo_num)
+    	values(#{post.title}, #{post.content}, #{post.writer}, #{post.board})
+    </insert>
+    <insert id="insertBoard">
+    	insert into board(bo_name) values(#{name})
+    </insert>
+    <delete id="deleteBoard">
+    	delete from board where bo_num = #{num}
+    </delete>
+    <update id="updateBoard">
+    	update board
+    	set bo_name = #{name} where bo_num = #{num}
+    </update>
+    <select id="selectTotalCount" resultType="int">
+   	select count(*) from post 
+    	where po_del = 'N'
+    	<if test="cri.boardNum != 0">
+    		and po_bo_num = #{cri.boardNum}
+    	</if>
+    	<if test="cri.type == 1">
+    		and (
+    			po_title like concat('%', #{cri.search}, '%')
+    			or po_content like concat('%', #{cri.search}, '%')
+    		)
+    	</if>
+    	<if test="cri.type == 2">
+    		and po_me_id = #{cri.search}
+    	</if>
+    	<if test="cri.type == 0">
+    		and (
+    			po_title like concat('%', #{cri.search}, '%')
+    			or po_content like concat('%', #{cri.search}, '%')
+    			or po_me_id = #{cri.search}
+    		)
+    	</if>
+    </select>
+    
+    <update id="deletePost">
+    	update post
+    	set po_del = 'Y' where po_num = #{num}
+    </update>
+    
+    <update id="updatePost">
+    	update post
+    	set po_title = #{post.title}, po_content=#{post.content}
+    	where po_num = #{post.postNum}
+    </update>
+    
+    <insert id="insertFile">
+    	insert into file(fi_po_num, fi_name, fi_ori_name)
+    	values(#{file.fi_po_num}, #{file.fi_name}, #{file.fi_ori_name})
+    </insert>
+    <select id="selectFileList" resultType="FileVO">
+    	select * from file where fi_po_num = #{num}
+    </select>
+    
+    <delete id="deleteFile">
+    	delete from file where fi_num = #{fiNum}
+    </delete>
+    
+    <select id="selectFile" resultType="FileVO">
+    	select * from file where fi_num = #{fiNum}
+    </select>
+    
+    <select id="selectLike" resultType="LikeVO">
+    	select * from `like` 
+    	where li_po_num = #{like.postNum} and
+    		li_me_id = #{like.id} 
+    </select>
+    
+    <insert id="insertLike">
+    	insert into `like`(li_me_id, li_po_num, li_state)
+    	values(#{like.id}, #{like.postNum}, #{like.state})
+    </insert>
+    <update id="updateLike">
+    	update `like`
+    	set
+    		li_state = #{like.state}
+    	where
+    		li_po_num = #{like.postNum} and li_me_id = #{like.id}
+    </update>
+    
+   	<delete id="deleteLike">
+   		delete from `like` 
+   		where
+   			li_po_num = #{like.postNum} and li_me_id = #{like.id}
+   	</delete>
+   	<select id="selectLikeCount" resultType="int">
+   		select count(*) from `like` 
+   		where li_po_num = #{postNum} and li_state = #{state}
+   	</select>
+   	<update id="updateBoardLike">
+   		update post
+  		set
+  			po_up = (select count(*) from `like` 
+  						where li_po_num = #{postNum} and li_state = 1),
+  			po_down = (select count(*) from `like` 
+  						where li_po_num = #{postNum} and li_state = -1)
+  		where
+  			po_num = #{postNum}
+   	</update>
+</mapper>
+
+
+
+
+
