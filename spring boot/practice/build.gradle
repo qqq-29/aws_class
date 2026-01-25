@@ -31,7 +31,7 @@ dependencies {
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	
 	// Spring Security (암호화 도구 포함)
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
 	
 	// MySQL Connector
     implementation 'mysql:mysql-connector-java:8.0.16'
