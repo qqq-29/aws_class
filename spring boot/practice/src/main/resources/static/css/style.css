@@ -1,1 +1,38 @@
-@charset "UTF-8";
+.navbar .dropdown-menu {
+	min-width: 120px; /* 드롭다운 폭 */
+}
+
+.navbar .no-arrow::after {
+	display: none;
+}
+
+.navbar .dropdown-menu {
+	display: block;
+	opacity: 0;
+	transform: translateY(-10px);
+	transition: opacity 0.4s ease, transform 0.4s ease;
+	pointer-events: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+}
+
+/* hover 시 show 클래스 적용 */
+.navbar .dropdown.hover>.dropdown-menu {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+/* 메뉴 항목 사이 간격 */
+.navbar .navbar-nav .nav-item+.nav-item {
+	margin-left: 30px;
+}
+
+.navbar-brand img {
+	width: auto;
+	max-width: 100px;
+	max-height: 100px; /* 원하는 최대 높이 */
+	display: block;
+	margin: 0 auto; /* 가운데 정렬 */
+}

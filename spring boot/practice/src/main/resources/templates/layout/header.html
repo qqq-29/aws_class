@@ -1,3 +1,4 @@
+<link rel="stylesheet" th:href="@{/css/style.css}">
 <header th:fragment="header">
 	<!-- 상단 작은 navbar -->
 	<div class="bg-white text-dark py-1">
@@ -118,7 +119,9 @@
 
 	<style>
 .navbar .dropdown-menu {
-	min-width: 120px; /* 드롭다운 폭 */
+	min-width: 110px; /* 드롭다운 폭 */
+	margin-left: -20px;
+	padding-left: 10px;
 }
 
 .navbar .no-arrow::after {
@@ -141,6 +144,7 @@
 	opacity: 1;
 	transform: translateY(0);
 	pointer-events: auto;
+	background-color: #f0f0f0;
 }
 
 /* 메뉴 항목 사이 간격 */
