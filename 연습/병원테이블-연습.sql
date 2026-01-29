@@ -1,0 +1,6 @@
+CREATE TABLE hos (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    hospital_name VARCHAR(255),
+	tel VARCHAR(30),
+    address VARCHAR(1000)
+);
