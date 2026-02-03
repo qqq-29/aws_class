@@ -18,38 +18,59 @@ import kr.hi.community3.util.CustomUser;
 public class JwtTokenProvider {
 
     private final Key key;
-    private final long validityInMilliseconds;
-
+    private final long accessTokenValidity;
+    private final long refreshTokenValidity;
 
     public JwtTokenProvider(
         @Value("${jwt.secret}") String secret,
-        @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds
+        @Value("${jwt.token-validity-in-seconds}") long accessSeconds,
+        @Value("${jwt.refresh-token-validity-in-seconds}") long refreshSeconds
     ) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.validityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.accessTokenValidity = accessSeconds * 1000;
+        this.refreshTokenValidity = refreshSeconds * 1000;
     }
 
-    public String createToken(CustomUser user) {
-    	//현재 시간을 초로 환산
-    	long now = (new Date()).getTime();
-    	//현재 시간에 만료 기간을 더한 날짜를 계산
-        Date validity = new Date(now + this.validityInMilliseconds);
-        
-        return Jwts.builder()
+    /* ======================
+       Access Token
+       ====================== */
+    public String createAccessToken(CustomUser user) {
+        return createToken(user, accessTokenValidity, false);
+    }
+
+    /* ======================
+       Refresh Token
+       ====================== */
+    public String createRefreshToken(CustomUser user) {
+        return createToken(user, refreshTokenValidity, true);
+    }
+
+    /* ======================
+       공통 토큰 생성
+       ====================== */
+    private String createToken(CustomUser user, long validity, boolean isRefresh) {
+        long now = System.currentTimeMillis();
+        Date expiry = new Date(now + validity);
+
+        var builder = Jwts.builder()
                 .setSubject(user.getUsername())
-                //claim을 통해 토큰에 넣고 싶은 정보를 추가
-                .claim("email", user.getUser().getMe_email())
-                .claim("role", user.getAuthorities().iterator().next().getAuthority())
-                //시작일
-                .setIssuedAt(new Date())
-                //만료일
-                .setExpiration(validity)
-                //서명
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+                .setIssuedAt(new Date(now))
+                .setExpiration(expiry)
+                .signWith(key, SignatureAlgorithm.HS256);
+
+        if (isRefresh) {
+            builder.claim("type", "refresh");
+        } else {
+            builder.claim("email", user.getUser().getMe_email());
+            builder.claim("role", user.getAuthorities().iterator().next().getAuthority());
+        }
+
+        return builder.compact();
     }
 
-    //토큰에서 claim 정보들을 가져옴
+    /* ======================
+       토큰 파싱 & 검증
+       ====================== */
     public Claims parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -57,5 +78,8 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
-}
 
+    public boolean isRefreshToken(String token) {
+        return "refresh".equals(parseClaims(token).get("type"));
+    }
+}

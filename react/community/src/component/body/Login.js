@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useAuth } from "../../AuthContext";
+import { getMe } from "../../api/authFech";
+import { useNavigate } from "react-router-dom";
 
 
 function Login(){
-
+	const {setUser} = useAuth();
 	let [info, setInfo] = useState({id : "", pw : ""})
+	const navigate = useNavigate();
 
 	const changeHandler = e =>{
 		const {name, value} = e.target;
@@ -31,6 +35,10 @@ function Login(){
 			const res = await response.json();
 			localStorage.setItem("accessToken", res.accessToken);
 			alert("로그인 성공!");
+			//로그인 성공후 회원 정보를 user에 저장
+			const userData = await getMe();
+			setUser(userData);
+			navigate("/");
 
 		}catch(e){
 			console.error(e);

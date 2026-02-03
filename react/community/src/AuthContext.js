@@ -1,37 +1,35 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { authFetch } from "./api/authFech";
+import { authFetch, getMe } from "./api/authFech";
 
-//전역으로 사용할 수 있는 통로를 생성
+//컴포넌트 안에서 전역으로 사용할 수 있는 통로를 생성
 const AuthContext = createContext(null);
 
 //여기서 children은 props가 아닌 자식 컴포넌트
 export function AuthProvider({children}){
 
-	const [user, setUser] = useState({});
-	
-	useEffect(()=>{
+	const [user, setUser] = useState(null);
 
-		getMe();
-
-	}, []);
-
-	const getMe = async () =>{
+	const getMeAndSetUser = async() =>{
 		try{
-			const response = await authFetch("/api/v1/auth/me");
-			if(!response.ok){
-				return;
-			}
-			const res = await response.json();
-			const {id, email, role} = res;
-			setUser({id, email, role});
+		const res = await getMe()
+		if(!res){
+			setUser(res);
+		}
 		}catch(e){
 			console.error(e);
 			setUser(null);
 		}
 	}
 	
+	useEffect(()=>{
+
+		getMeAndSetUser();
+
+	}, []);
+
+	
 	return (
-		<AuthContext.Provider value={{user}} >
+		<AuthContext.Provider value={{user, setUser}} >
 			{children}
 		</AuthContext.Provider>
 	)

@@ -47,6 +47,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
             //토큰에 있는 payload 정보들을 가져옴
             Claims claims = jwtTokenProvider.parseClaims(token);
+            if ("refresh".equals(claims.get("type"))) {
+		        filterChain.doFilter(request, response);
+		        return;
+		    }
             //가져온 정보중에 subject 정보를 가져옴 => 토큰 소유주
             String username = claims.getSubject();
 

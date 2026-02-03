@@ -7,14 +7,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import kr.hi.community3.model.dto.LoginDTO;
 import kr.hi.community3.security.jwt.JwtTokenProvider;
+import kr.hi.community3.service.MemberDetailService;
 import kr.hi.community3.service.UserService;
 import kr.hi.community3.util.CustomUser;
 import lombok.AllArgsConstructor;
@@ -27,6 +32,7 @@ public class AuthController {
 	private final UserService userService;
 	private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberDetailService userDetailsService;
 	
     @PostMapping("/signup")
 	public ResponseEntity<Boolean> signup(@RequestBody LoginDTO user){
@@ -35,7 +41,9 @@ public class AuthController {
 	}
 	
 	@PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO request) {
+    public ResponseEntity<?> login(
+    		@RequestBody LoginDTO request,
+    		HttpServletResponse response) {
     	
 		//사용자의 아이디, 비번을 시큐리티에 넘겨서 유효한 사용자인지 확인
 		//=>MemberDetailService에서 확인을 진행
@@ -48,10 +56,64 @@ public class AuthController {
         //위에서 올바른 정보이면 CustomUser객체를 반환하고, 아니면 null을 반환
         CustomUser user = (CustomUser) authentication.getPrincipal();
         //토큰 생성
-        String token = jwtTokenProvider.createToken(user);
+        String token  = jwtTokenProvider.createAccessToken(user);
+        String refreshToken = jwtTokenProvider.createRefreshToken(user);
+		
+	    // 🔥 RefreshToken → HttpOnly Cookie
+	    Cookie cookie = new Cookie("refreshToken", refreshToken);
+	    cookie.setHttpOnly(true);
+	    cookie.setSecure(false); // https면 true
+	    cookie.setPath("/");
+	    cookie.setMaxAge(7 * 24 * 60 * 60);
+	    response.addCookie(cookie);
         //생성한 토큰을 화면에 전달. accessToken으로 전송
         return ResponseEntity.ok(Map.of("accessToken", token));
     }
+	
+	@PostMapping("/refresh")
+	public ResponseEntity<?> refresh(
+			//name과 일치하는 쿠키가 있으면 쿠키의 value를 가져옴
+	    @CookieValue(name = "refreshToken", required = false) String refreshToken
+	) {
+		//리프레쉬 토큰이 없으면 인증 실패
+	    if (refreshToken == null) {
+	        return ResponseEntity.status(401).build();
+	    }
+	
+	    
+	    //토큰이 리프레쉬 토큰이 맞는지 확인. 아니면 인증 실패
+	    if (!jwtTokenProvider.isRefreshToken(refreshToken)) {
+	        return ResponseEntity.status(401).build();
+	    }
+	    //토큰에서 정보를 추출
+	    Claims claims = jwtTokenProvider.parseClaims(refreshToken);
+	    //토큰의 소유주(아이디 또는 이메일) 정보를 가져옴
+	    String username = claims.getSubject();
+	    //소유주 정보로 회원 정보를 가져옴
+	    CustomUser user =
+	        (CustomUser) userDetailsService.loadUserByUsername(username);
+	    //회원 정보를 이용해서 토큰을 생성
+	    String newAccessToken =
+	        jwtTokenProvider.createAccessToken(user);
+	    //토큰을 화면
+	    return ResponseEntity.ok(
+	        Map.of("accessToken", newAccessToken)
+	    );
+	}
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletResponse response) {
+	
+		//쿠키에서 리프레쉬 토큰 제거
+	    Cookie cookie = new Cookie("refreshToken", null);
+	    cookie.setHttpOnly(true);
+	    cookie.setSecure(false); // https면 true
+	    cookie.setPath("/");
+	    cookie.setMaxAge(0); // 즉시 삭제
+	
+	    response.addCookie(cookie);
+	
+	    return ResponseEntity.ok().build();
+	}
 	
 	@GetMapping("/test")
 	public ResponseEntity<Boolean> test(
