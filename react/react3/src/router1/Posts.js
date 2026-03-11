@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 function Posts(){
 	let [posts, setPosts] = useState([]);
+	let [text, setText] = useState("");
 	useEffect(()=>{
 		console.log("게시글 로딩 중....")
 
@@ -21,6 +22,9 @@ function Posts(){
 	return(
 		<div>
 			<h1>게시글 목록</h1>
+			<form>
+				<input type="text" name="select_text" id="select_text" />
+			</form>
 			<table>
 				<thead>
 					<tr>

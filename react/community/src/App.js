@@ -1,9 +1,9 @@
-import {BrowserRouter, Link, Route, Routes} from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './component/nav/Navbar';
 import Main from './component/body/Main';
 import Signup from './component/body/Signup';
 import Login from './component/body/Login';
-import MyPage from './component/body/MyPage.js';
+import MyPage from './component/body/MyPage';
 
 function App() {
   return (
@@ -11,10 +11,10 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" exact element={<Main/>} />
-        <Route path="/signup" element={<Signup/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/mypage" element={<MyPage/>} />
+        <Route path="/" element={<Main />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </BrowserRouter>
   );

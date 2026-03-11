@@ -6,7 +6,7 @@ export function Login() {
   const navigate = useNavigate();
   const [info,setInfo]=useState({id : "", pw : ""})
 
-  const {setUser, getMe} = useAuth();
+  const {getMeAndSetUser} = useAuth();
 
   const textChange=(e)=>{
     const{name,value} = e.target;
@@ -35,12 +35,12 @@ export function Login() {
       alert("로그인성공")
       localStorage.setItem("accessToken", res.accessToken);
       navigate("/");
-      const me = await getMe();
-      setUser(me);
+      getMeAndSetUser();
     }else{
       alert("로그인실패")
     }
   }
+
 
   return (
     <div>
