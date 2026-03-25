@@ -1,0 +1,9 @@
+# 학습용으로 다운로드 했던 mnist 숫자 이미지들
+mnist_images/
+
+# 가상환경정보
+.venu
+
+__pycache__
+
+images/
