@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 import movie_learning as mo
 import pandas as pd
+import fashion as fs
 app = FastAPI()
 
 @app.get('/')
@@ -52,6 +53,15 @@ async def movies_recommend(title:str=Form(...), type:str=Form(...)):
 async def text(msg:str=Form(...)):
 	res = tm.predict(msg)
 	return {"msg" : '긍정' if res else '부정'}
+
+@app.post('/fashion')
+async def fashion(file:UploadFile=Form(...)):
+	# file을 바이너리데이터로 읽어옴
+	contents = await file.read()
+	# #예측
+	res = fs.predict_from_upload_file(contents)
+	print(f'URL : /fashion')
+	return {"msg" : res}
 
 if __name__ == '__main__':
 	# reload=True 사용시 주의 사항

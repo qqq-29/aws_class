@@ -75,5 +75,20 @@ public class APIController {
 				.block();
 				
 	}
+	
+	@PostMapping("/fashion/predict")
+	public String fashionPredict(@RequestParam("image")MultipartFile file) {
+		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+		//보낼 데이터를 추가
+		bodyBuilder.part("file", file.getResource());
+		
+		return webClient.post().uri("/fashion")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters
+						.fromMultipartData(bodyBuilder.build()))
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+	}
 
 }
