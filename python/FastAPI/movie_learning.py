@@ -282,7 +282,7 @@ def load_cosine_sim(file_name):
 		return None, None
 
 def get_movies():
-	df = pd.read_csv('tmdb_5000_credits.csv')
+	df = pd.read_csv('csv/tmdb_5000_credits.csv')
 	df = df[['title']].dropna()
 	return df[['title']].to_dict(orient='records')
 
@@ -291,18 +291,18 @@ if __name__ == '__main__':
 	# 피클 만드는 방법
 	# 1~3을 주석해제, 나머지 주석. 실행하면 pkl파일 생성
 	#1
-	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+	# recommender.load_data('csv/tmdb_5000_credits.csv', 'csv/tmdb_5000_movies.csv')
 	#2
 	# recommender.calculate_content_cosine_sim()
 	#3
-	# recommender.save_model('movie_model_content.pkl')
-	# recommender.load_model('movie_model_content.pkl')
+	# recommender.save_model('model/movie_model_content.pkl')
+	# recommender.load_model('model/movie_model_content.pkl')
 	# print(recommender.get_recommendations_movies('content', 'Avatar'))
 
-	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
-	# recommender.calculate_etc_cosine_sim()
-	# recommender.save_model('movie_model_etc.pkl')
-	recommender.load_model('movie_model_etc.pkl')
-	print(recommender.get_recommendations_movies('etc', 'Avatar'))
+	recommender.load_data('csv/tmdb_5000_credits.csv', 'csv/tmdb_5000_movies.csv')
+	recommender.calculate_etc_cosine_sim()
+	recommender.save_model('model/movie_model_etc.pkl')
+	recommender.load_model('model/movie_model_etc.pkl')
+	# print(recommender.get_recommendations_movies('etc', 'Avatar'))
 	
 	pass

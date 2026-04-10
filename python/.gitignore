@@ -11,3 +11,5 @@ images/
 .model
 .pkl
 .keras
+*.pkl
+*.mp4

@@ -45,11 +45,11 @@ def train_and_save_model(dataset_x, dataset_y):
 		'vectorizer' : vectorizer, 
 		'model' : model
 	}
-	jl.dump(model_data, 'model.pkl')
+	jl.dump(model_data, 'model/model.pkl')
 	
 def predict(text):
 	# 모델과 벡터라이저를 불러옴
-	mode_data = jl.load('model.pkl')
+	mode_data = jl.load('model/model.pkl')
 	model , vectorizer = mode_data['model'], mode_data['vectorizer']
 	
   # 형태소가 처리된 문자열로 변환
@@ -66,7 +66,7 @@ def predict(text):
 if __name__ == '__main__':
 	# print(text_preprocessing("오늘은 날이 너무 너무 좋습니다."))
 	# 테스트 할 때 sample.csv를 인식하게 하기 위해 cd "day11(ml)" 명령어 입력 후 실행
-	df = pd.read_csv(r'sample.csv')
+	df = pd.read_csv(r'csv/sample.csv')
 	train_and_save_model(df['sentence'], df['label'])
 	print(predict('오늘은 날이 너무 너무 좋습니다.'))
 	print(predict('날씨가 화창한데 자격증 시험에 떨어졌습니다.'))

@@ -90,5 +90,20 @@ public class APIController {
 				.bodyToMono(String.class)
 				.block();
 	}
+	
+	@PostMapping("/chatbot")
+	public String chatBot(@RequestParam("msg")String msg) {
+		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+		// 보낼 데이터를 추가
+		bodyBuilder.part("msg", msg);
+		
+		return webClient.post().uri("/chatbot")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters
+						.fromMultipartData(bodyBuilder.build()))//이미지가 없어서 body없어도 괜찮습
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+	}
 
 }

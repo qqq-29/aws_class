@@ -5,7 +5,7 @@ from tensorflow.keras import layers, models,datasets
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.data import Dataset
 
-def train_model_save_model(save_model_name:str = 'fashion_model.keras'):
+def train_model_save_model(save_model_name:str = 'model/fashion_model.keras'):
 	(X_train, y_train), (_, _) = datasets.fashion_mnist.load_data()
 	
 	callbacks = [
@@ -84,12 +84,12 @@ def train_model_save_model(save_model_name:str = 'fashion_model.keras'):
 		batch_size=128,
 	)
 
-def load_model(load_model_name:str = 'fashion_model.keras'):
+def load_model(load_model_name:str = 'model/fashion_model.keras'):
 	return tf.keras.models.load_model(load_model_name)
 
 def predict_from_upload_file(
 	img_contents, 
-	load_model_name:str = 'fashion_model.keras'):
+	load_model_name:str = 'model/fashion_model.keras'):
 
 	model = load_model(load_model_name)
 	# model.summary()
