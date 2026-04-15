@@ -12,23 +12,25 @@ GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 GOOGLE_MODEL_NAME = "gemini-2.5-flash"
 client = genai.Client(api_key=GOOGLE_API_KEY)
 
-# @app.get("/ask")
-@app.post("/ask")
+@app.get("/ask")
 async def ask_gemini(prompt: str):
-
-	response = client.models.generate_content(
+    response = client.models.generate_content(
     model=GOOGLE_MODEL_NAME,
     contents=types.Part.from_text(text=prompt),
 	)
 
-	return {
-    "question": prompt,
-    "answer": response.text
+    return {
+    # "question": prompt,
+    "message": response.text
   }
 
 @app.get("/translate")
 async def translate(text: str = Query(..., description='번역할 문장'),
                     style: str = Query("formal", description='말투: formal(격식), casual(반말), business(비즈니스)')):
+    print(text)
+    print(style)
+    # return{"answer" : "연결"}
+
     # 아래 모든 줄은 스페이스바 4칸(혹은 8칸)으로 구성되었습니다.
     # 좋은 번력을 위하여 번역 문장을 좋은 프롬프트로 변환
     # I am a boy => 나는 소년이다
@@ -63,6 +65,8 @@ def ad_copy(
 	temp:float = Query(0.8, ge=0.0, le=1.0, description='창의성 온도(0~1)'),
 	count:int = Query(50, description='광고문구 글자제한'),
 ):
+	return{"answer" : "연결"}
+
 	prompt = f"""
 	{product}의 광고 문구를 {target}을 타겟으로 맞춰 {count}자 내외로 작성해줘
 	제품 특징 : {feature}

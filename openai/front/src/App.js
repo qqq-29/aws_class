@@ -1,16 +1,22 @@
 
 import {useEffect, useState} from "react";
 import Main from './Main';
-import Ask from './Ask';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Ask from './Ask.jsx';
+import List from './List';
+import Translate from "./Translate";
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Adcopy from "./Adcopy";
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main/>} />
-        <Route path="/ask" element={<Ask/>} />
+        <Route path="/" exact element={<Main/>} />
+        <Route path="/list"element={<List/>} />
+        <Route path="/ask"element={<Ask/>} />
+        <Route path="/translate"element={<Translate/>}/>
+        <Route path="/ad-copy"element={<Adcopy/>}/>
       </Routes>
     </BrowserRouter>
   );

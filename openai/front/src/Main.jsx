@@ -6,6 +6,9 @@ function Main(){
 		<div className="App">
 			<header className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
+				<Link className="App-link" to={"/list"}>
+					기능모음
+				</Link>
 				<Link className="App-link" to="/ask">
 					대답
 				</Link>
