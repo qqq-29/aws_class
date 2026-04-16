@@ -2,6 +2,7 @@ package kr.hi.server.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,11 +48,16 @@ public class APIController {
 	  }
 	
 	@GetMapping("/ad-copy")
-	public String adcopy(@RequestBody AdcopyDTO dto){
+	public String adcopy(AdcopyDTO dto){
+		System.out.println(dto);
 		String result =webClient.get()
 		  .uri(uriBuilder-> uriBuilder
-					.path("/chat")
-					.queryParam("product", dto.product)
+					.path("/ad-copy")
+					.queryParam("product", dto.getProduct())
+					.queryParam("feature", dto.getFeature())
+					.queryParam("target", dto.getTarget())
+					.queryParam("temp", dto.getTemp())
+					.queryParam("count", dto.getCount())
 					.build())
 //		  .bodyValue(dto)
 		  
@@ -62,7 +68,13 @@ public class APIController {
 		return result;
 		
 	}
+	
+	@PostMapping("/summarize")
+	public ResponseEntity<String> summarize(@RequestBody SummaryDTO dto){
+		System.out.println(dto);
+		return ResponseEntity.ok("ok");
 	}
+}
 @Data
 class AdcopyDTO{
 	String product;
@@ -70,4 +82,11 @@ class AdcopyDTO{
 	String target;
 	float temp;
 	int count;
+}
+
+@Data
+class SummaryDTO{
+	String text;
+	String target_lan;
+	int max_sentence;
 }

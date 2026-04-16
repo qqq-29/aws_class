@@ -51,8 +51,8 @@ export const sendData3 = async(url, params, type, callbackFunc)=>{
 				if(!response.ok){
 					return
 				}
-				type === 'json' ? await response.json() : await response.text()
-				const result = type
+				
+				const result = type === 'json' ? await response.json() : await response.text()
 				if(callbackFunc)
 					callbackFunc(result)
 	}catch(e){

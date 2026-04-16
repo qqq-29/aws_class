@@ -65,7 +65,7 @@ def ad_copy(
 	temp:float = Query(0.8, ge=0.0, le=1.0, description='창의성 온도(0~1)'),
 	count:int = Query(50, description='광고문구 글자제한'),
 ):
-	return{"answer" : "연결"}
+	# return{"answer" : "연결"}
 
 	prompt = f"""
 	{product}의 광고 문구를 {target}을 타겟으로 맞춰 {count}자 내외로 작성해줘
@@ -91,8 +91,9 @@ class Summary(BaseModel):
 
 @app.post("/summarize")
 async def summarize(summary:Summary):
+    return{"answer" : "연결"}
 
-	prompt = f"""
+    prompt = f"""
 	아래 텍스트를 보고 간단히 {summary.target_lan}언어로 {summary.max_sentence}개 문장으로 요약해주세요.
 	그리고 가장 중요한 키워드를 3개 추출할 것.객관적이고 중립적인 어조를 유지할것
 	텍스트 : {summary.text}
@@ -102,12 +103,12 @@ async def summarize(summary:Summary):
 	- 키워드 : #키워드1, #키워드2, #키워드3,
 	"""
 
-	response = client.models.generate_content(
+    response = client.models.generate_content(
     model=GOOGLE_MODEL_NAME,
     contents=types.Part.from_text(text=prompt),
     config=types.GenerateContentConfig(temperature=0.2),
 )
-	return { 'answer' : response.text }
+    return { 'answer' : response.text }
 
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)

@@ -6,7 +6,7 @@ import {sendData3} from "./Ai"
 function Adcopy(){
 	const [isLoading, setIsLoading] = useState(false)
 	const [result, setResult] = useState()
-	const [form,setForm] = useState({product:'', feature:'', target:'', temp:'', count:''}) 
+	const [form,setForm] = useState({product:'', feature:'', target:'전연령', temp:'0.2', count:'50'}) 
 
 	const formSubmit = (e)=>{
 		e.preventDefault()
@@ -15,15 +15,14 @@ function Adcopy(){
 			return
 		}
 		setIsLoading(true)
-		sendData3("/api/v1/ai/adcopy", form, 'json', 함수)
+		sendData3("/api/v1/ai/ad-copy", form, 'json', 함수)
+	}
 
-		const 함수 = (res)=>{
+	const 함수 = (res)=>{
+		console.log(res)
 			setResult(res.answer)
 			setIsLoading(false)
 		}
-
-		
-	}
 
 	const inputChange = (e)=>{
 		const {name, value} = e.target
@@ -36,11 +35,33 @@ function Adcopy(){
 				<Link to = "/list">뒤로가기</Link>
 				<h1>광고 ai테스트</h1>
 				<form style={{display:'flex'}} onSubmit={formSubmit}>
-					<input name="product" onChange={inputChange} value={form.product}/>
-					<input name="feature" onChange={inputChange} value={form.feature}/>
-					<input name="target" onChange={inputChange} value={form.target}/>
-					<input name="temp" onChange={inputChange} value={form.temp}/>
-					<input name="count" onChange={inputChange} value={form.count}/>
+					<div style={{display:'flex', margin:'10px 0'}}>
+						<label style={{width:'100px'}}>제품명</label>
+						<input name="product" onChange={inputChange} value={form.product}/>
+					</div>
+					<div style={{display:'flex', margin:'10px 0'}}>
+						<label style={{width:'100px'}}>제품특징</label>
+						<input name="feature" onChange={inputChange} value={form.feature}/>
+					</div>
+					<div style={{display:'flex', margin:'10px 0'}}>
+						<label style={{width:'100px'}}>타겟</label>
+					<select name="target" onChange={inputChange} value={form.target}>
+						<option>전연령</option>
+						<option>10대</option>
+						<option>20대</option>
+						<option>30대</option>
+					</select>
+					</div>
+					<div style={{display:'flex', margin:'10px 0'}}>
+						<label style={{width:'100px'}}>문구창의성</label>
+						<span>일반</span>
+						<input type="range" name="temp" min={0} max={1} step={0.1} onChange={inputChange} value={form.temp}/>
+						<span>창의적</span>
+					</div>
+					<div style={{display:'flex', margin:'10px 0'}}>
+						<label style={{width:'100px'}}>글자제한</label>
+						<input name="count" onChange={inputChange} value={form.count}/>
+					</div>
 					<div style={{display:'flex'}}>
 					<div style={{width:'100%', border:"1px solid black"}}>
 						{

@@ -6,6 +6,7 @@ import List from './List';
 import Translate from "./Translate";
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Adcopy from "./Adcopy";
+import Summarize from "./Summarize.jsx";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/ask"element={<Ask/>} />
         <Route path="/translate"element={<Translate/>}/>
         <Route path="/ad-copy"element={<Adcopy/>}/>
+        <Route path="/summarize"element={<Summarize/>}/>
       </Routes>
     </BrowserRouter>
   );

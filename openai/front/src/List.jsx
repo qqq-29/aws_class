@@ -15,6 +15,9 @@ function List(){
 					<Link to={"/ad-copy"}>광고 ai테스트</Link>
 					{/**/}
 				</li>
+				<li>
+					<Link to={"/summarize"}>번역 ai테스트</Link>
+				</li>
 			</ul>
 		</div>
 	)
