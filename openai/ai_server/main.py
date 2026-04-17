@@ -4,13 +4,21 @@ from fastapi import FastAPI, Query
 from pydantic import BaseModel
 import uvicorn
 import os
+import sample as sp
 
 app = FastAPI()
 
 # gemini-2.5-flash
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-GOOGLE_MODEL_NAME = "gemini-2.5-flash"
+# GOOGLE_MODEL_NAME = "gemini-2.5-flash"
+GOOGLE_MODEL_NAME = "gemini-3.1-flash-lite-preview"
+SYSTEM_INSTRUCTION = "당신은 내 담당 영양사야, 냐가 먹은 음식들을 토대로 식단을 관리해줘."
+MAX_HISTORY_SIZE=4
+
 client = genai.Client(api_key=GOOGLE_API_KEY)
+
+chat_history = sp.chat_history if sp.chat_history else []
+db = sp.db if sp.chat_history else { "history" : [], "summary" : "" }
 
 @app.get("/ask")
 async def ask_gemini(prompt: str):
@@ -91,16 +99,31 @@ class Summary(BaseModel):
 
 @app.post("/summarize")
 async def summarize(summary:Summary):
-    return{"answer" : "연결"}
 
     prompt = f"""
-	아래 텍스트를 보고 간단히 {summary.target_lan}언어로 {summary.max_sentence}개 문장으로 요약해주세요.
-	그리고 가장 중요한 키워드를 3개 추출할 것.객관적이고 중립적인 어조를 유지할것
-	텍스트 : {summary.text}
+	너는 복잡한 정보를 명료하게 정리하는 전문 편집자야.
+	아래 텍스트를 분석해서 {summary.target_lan}로 요약해줘	
+
+	[텍스트]
+	{summary.text}
+
+	[작성 가이드]
+	1. 핵심 내용을 최대 {summary.max_sentence}개의 문장으로 요약할 것.
+	2. 가장 중요한 키워드를 3개 추출할 것.
+	3. 객관적이고 중립적인 어조를 유지할 것.
 
 	[출력형식]
-	- 요악 : (내용)
-	- 키워드 : #키워드1, #키워드2, #키워드3,
+	- 요약 : (내용)
+	======================
+	- 키워드 : #키워드1, #키워드2, #키워드3
+	"""
+    """
+	- 요약 : 삼성SDS는 국회 빅데이터 플랫폼 구축 1단계 사업을 통해 AI 기반 국회 의정 지원 플랫폼을 공식 오픈했으며, 
+	이는 국회의 방대한 데이터를 기반으로 검색, 분석, 작성까지 지원하는 생성형 AI 시스템이다. 
+	이 플랫폼은 국회의원 및 보좌진 5000여 명이 활용하여 데이터 기반 의정활동을 본격화하고, 
+	AI 어시스턴트, 지능형 검색, 법률안 서비스 등 3가지 핵심 의정지원 서비스를 제공한다. 
+	삼성SDS는 이번 사업을 통해 AI 전환 자동화, 데이터 거버넌스 체계 수립, 국회 특화 언어모델 도입 등으로 안정적인 데이터 활용 기반을 마련하고 보안성을 강화했다.
+	- 키워드 : #AI국회, #의정지원플랫폼, #생성형AI"
 	"""
 
     response = client.models.generate_content(
@@ -110,5 +133,92 @@ async def summarize(summary:Summary):
 )
     return { 'answer' : response.text }
 
+# 최근 N개 대화를 이용한 챗봇
+@app.get("/chatbot")
+async def chatbot_gemini(prompt: str):
+	global chat_history
+	chat_history.append(types.Content(
+		role="user", 
+		parts=[types.Part.from_text(text=prompt)]
+		))
+
+	response = client.models.generate_content(
+		model= GOOGLE_MODEL_NAME,
+		contents=chat_history, #types.Part.from_text(text=prompt),
+		config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+	model_text = response.text
+	# 대화 기록을 저장(추가)
+	# 사용자 질문을 저장
+	chat_history.append(types.Content(
+		role="user", 
+		parts=[types.Part.from_text(text=prompt)]
+		))
+	chat_history.append(types.Content(
+		role="model", 
+		parts=[types.Part.from_text(text=model_text)]
+		))
+
+	# 대화 기록이 최대 저장수를 넘어가면 앞부분 제거
+	if(len(chat_history) >= MAX_HISTORY_SIZE):
+
+		chat_history = chat_history[-10:] # 뒤에서 10개 추출
+
+	# 답변을 리턴
+	return {
+		"message": model_text
+	}
+async def update_summary():
+	to_summarize = db["history"][:-2] #마지막 2개 제외
+
+	prompt = f"""
+	기존 요약 : {db['summary']}
+	추가된 대화 : {to_summarize}
+
+	위 내용을 바탕으로 지금가지의 대화 맥락을 한 문장으로 업데이트해줘.
+	사용자의 주요 관심사와 언급된 핵심 사실을 포함해줘
+	"""
+
+	response = client.models.generate_content(
+    model=GOOGLE_SUMMARY_MODEL_NAME,
+    contents=types.Part.from_text(text=prompt),
+    config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		)
+	)
+	model_text = response.text
+	
+@app.get("/summary-chatbot")
+async def chatbot_gemini(prompt:str):
+    db["history"].append(types.Content(
+	    role = "user",
+        parts = [types.Part.from_text(text=prompt)]))
+
+    response = client.models.generate_content(
+        model=GOOGLE_MODEL_NAME,
+        contents=types.Part.from_text(text=prompt),
+        config=types.GenerateContentConfig(
+		    temperature=0.7,
+		    system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+    model_text = response.text
+		
+    db["history"].append(types.Content(
+	    role = "model",
+        parts = [types.Part.from_text(text=model_text)]))
+
+    if(len(chat_history) >= MAX_HISTORY_SIZE):
+        await update_summary()
+				
+    # 답변을 리턴
+    return {
+		"message": model_text,
+		"summary": db["summary"]
+	}
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)

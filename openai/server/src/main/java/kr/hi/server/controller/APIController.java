@@ -20,17 +20,19 @@ public class APIController {
 	private final WebClient webClient;
 
 	@GetMapping("/ask")
-	public String ask(@RequestParam ("prompt")String prompt) {	
-	    String result = webClient.get()
-	      .uri(uriBuilder-> uriBuilder
-	    		  .path("/ask")//main.py하고연결?
-	      		  .queryParam("prompt", prompt)
-	      		  .build())
-	      .retrieve()
-	      .bodyToMono(String.class)
-	      .block();
-	      return result;
-	  }
+	public String ask(
+			@RequestParam("prompt")String prompt,
+			@RequestParam("endpoint")String endpoint) {
+		String result = webClient.get()
+			.uri(uriBuilder-> uriBuilder
+					.path(endpoint)
+					.queryParam("prompt", prompt)
+					.build())
+			.retrieve()
+			.bodyToMono(String.class)
+			.block();
+		return result;
+	}
 	
 	@GetMapping("/translate")
 	public String translate(@RequestParam ("text")String text,
@@ -70,11 +72,19 @@ public class APIController {
 	}
 	
 	@PostMapping("/summarize")
-	public ResponseEntity<String> summarize(@RequestBody SummaryDTO dto){
+	public String summarize(@RequestBody Summary dto){
 		System.out.println(dto);
-		return ResponseEntity.ok("ok");
+		String result = 
+				webClient.post()
+					.uri("/summarize")
+					.bodyValue(dto)
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();
+
+		return result;
 	}
-}
+
 @Data
 class AdcopyDTO{
 	String product;
@@ -83,10 +93,9 @@ class AdcopyDTO{
 	float temp;
 	int count;
 }
-
-@Data
-class SummaryDTO{
-	String text;
-	String target_lan;
-	int max_sentence;
 }
+
+record Summary(
+	String text,
+	String target_lan,
+	int max_sentence){}

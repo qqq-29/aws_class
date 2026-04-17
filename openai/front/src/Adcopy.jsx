@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import {sendData3} from "./Ai"
+import {sendData} from "./Ai"
 
 
 function Adcopy(){
@@ -15,7 +15,7 @@ function Adcopy(){
 			return
 		}
 		setIsLoading(true)
-		sendData3("/api/v1/ai/ad-copy", form, 'json', 함수)
+		sendData("/api/v1/ai/ad-copy", form, 'json', 함수)
 	}
 
 	const 함수 = (res)=>{

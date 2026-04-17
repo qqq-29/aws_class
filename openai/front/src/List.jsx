@@ -6,7 +6,7 @@ function List(){
 			<h1>기능모임</h1>
 			<ul>
 				<li>
-					<Link to={"/ask"}>기본 ai테스트</Link>
+					<Link to={"/ask"}>챗봇 ai테스트</Link>
 				</li>
 				<li>
 					<Link to={"/translate"}>번역 ai테스트</Link>
@@ -16,7 +16,7 @@ function List(){
 					{/**/}
 				</li>
 				<li>
-					<Link to={"/summarize"}>번역 ai테스트</Link>
+					<Link to={"/summarize"}>요약 ai테스트</Link>
 				</li>
 			</ul>
 		</div>
