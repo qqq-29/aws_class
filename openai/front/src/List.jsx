@@ -1,0 +1,26 @@
+import { Link } from 'react-router-dom';
+
+function List(){
+	return(
+		<div>
+			<h1>기능모임</h1>
+			<ul>
+				<li>
+					<Link to={"/ask"}>챗봇 ai테스트</Link>
+				</li>
+				<li>
+					<Link to={"/translate"}>번역 ai테스트</Link>
+				</li>
+				<li>
+					<Link to={"/ad-copy"}>광고 ai테스트</Link>
+					{/**/}
+				</li>
+				<li>
+					<Link to={"/summarize"}>요약 ai테스트</Link>
+				</li>
+			</ul>
+		</div>
+	)
+}
+
+export default List;

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<input type="text" id="userMsg">
+<button onclick="send()">보내기</button>
+<script>
+    async function send() {
+        const m = document.getElementById('userMsg').value;
+        const res = await fetch(`/api/v1/test?msg=${m}`);
+        
+    }
+</script>
+</body>
+</html>

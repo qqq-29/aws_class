@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FastAPI</title>
+</head>
+<body>
+	<form method="post" id="sendForm">
+		<input type="text" id="sentence" name="msg">
+		<button id="btn" type="button">전송</button>
+	</form>
+	<div id="result"></div>
+	<script type="text/javascript">
+		const btn = document.getElementById('btn')
+		const form = document.getElementById('sendForm')
+		const text = document.getElementById('sentence')
+		const resultDiv = document.getElementById('result')
+		
+		btn.addEventListener("click", async ()=>{
+			const formData = new FormData(form);
+			btn.disabled = true;
+
+			try{
+				const response = await fetch('/api/v1/proxy/text',{
+					method : 'POST',
+					body : formData
+				})
+				//const result = await response.text()
+				//resultDiv.innerHTML = `분석 결과 : ${result}`
+				const result = await response.json()
+				resultDiv.innerHTML = `분석 결과 : ${result.msg}`
+			}catch(e){
+				console.error(e)
+			}finally{
+				btn.disabled = false;
+			}
+		});
+	</script>
+</body>
+</html>

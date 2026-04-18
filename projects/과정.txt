@@ -1,0 +1,14 @@
+1.projects 폴더에 FastAPI 프로젝트 생성
+	- 프로젝트 면 : ai
+2.가상환경 설정
+3.필요한 라이브러리 설치
+4.기본 코드생성
+5.실행
+6.브라우저에서 localhost:8000으로 확인
+
+http://localhost:8000/docs 실행할수있는거 볼수있다
+
+python/FastAPI 프로젝트를 참고해서 문장이 주어졌을 때 학습
+결과를 반환하도록 작성
+- ChatbotData.csv
+- cached_emb_data.npy

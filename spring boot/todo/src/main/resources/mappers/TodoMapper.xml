@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.hi.todo.dao.TodoDAO">
+    <select id="selectTodos" resultType="TodoVO">
+    	select * from todo 
+    	<if test='date != ""'>
+    		where date = #{date}
+    	</if>
+    	order by date desc, `order` asc
+    </select>
+    
+    <insert id="insertTodo">
+    	insert into todo(date, text, `order`)
+    	select 
+    		#{todoVO.date}, 
+    		#{todoVO.text}, 
+    		ifnull(MAX(`order`), 0 )+1 
+    	FROM todo 
+    	where date = #{todoVO.date}
+    </insert>
+    
+    <delete id="delTodo">
+    	delete from todo where num = #{num}
+    </delete>
+    
+    <update id="updateTodo">
+    	update todo set text = #{todo.text}
+    	where num = #{todo.num}
+    </update>
+</mapper>

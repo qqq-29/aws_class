@@ -27,4 +27,7 @@ java/.gitignore
 .classpath
 .project
 
+.ipynb_checkpoints/
+
 /bin/
+__pycache__/
