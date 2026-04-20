@@ -41,4 +41,20 @@ const sendDataPost = async (url, params, type, callbackFunc)=>{
 		console.error(e)
 	}
 }
-export {sendData, sendDataPost}
+const fetchPost = async (url, init, type, callbackFunc)=>{
+	try{
+		const response = await fetch(url, init)
+
+		if(!response.ok){
+			return
+		}
+
+		const result = type === 'json' ? await response.json() : await response.text()
+		//콜백 함수가 있으면 마지막에 콜백 함수를 실행
+		if(callbackFunc)
+			callbackFunc(result)
+	}catch(e){
+		console.error(e)
+	}
+}
+export {sendData, sendDataPost, fetchPost}
