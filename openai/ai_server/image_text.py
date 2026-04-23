@@ -3,17 +3,28 @@
 # 결과 : 사과 7개 있어요 => 사과가 어디에 있는지 네모칸치기
 from google import genai
 from google.genai import types
+from fastapi import FastAPI, Query, File, UploadFile
 import os
 import re
 import json
 import cv2
 
+app = FastAPI()
+
 GOOGLE_API_KEY = 'AIzaSyC3_DMp9sOHrw2DHF_NqG91jV46yiRhNGc'
 GOOGLE_MODEL_NAME = "gemini-2.5-flash-lite"
 
 client = genai.Client(api_key=GOOGLE_API_KEY)
+
+
+# @app.get("/image-text")
+# async def image_text(prompt:str=Query(...,description='질문')):
+
+# 	return get_ai_vision_result(prompt)
+
 # 이미지에서 사용자 질문에 맞는 결과를 반환
 # 사과가 어디에 있는지(위치) 
+
 def get_ai_vision_result(image_path, user_prompt):
 
 	with open(image_path, "rb") as f:
@@ -112,3 +123,4 @@ res_count, img_bytes = save_dection_result(input_image_path, result)
 
 for label in res_count.keys():
 	print(f"{label} : {res_count[label]}개")
+

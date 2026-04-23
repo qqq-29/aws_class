@@ -6,6 +6,7 @@ import Translate from "./Translate";
 import AdCopy from "./Adcopy";
 import Summarize from "./Summarize";
 import RagChatBot from "./RagChatBot";
+import ImageText from "./ImageText"
 
 
 function App() {
@@ -19,6 +20,12 @@ function App() {
         <Route path="/ad-copy" element={<AdCopy/>} />
         <Route path="/summarize" element={<Summarize/>} />
         <Route path="/rag-chatbot" element={<RagChatBot/>} />
+        {/*
+        ImageText 컴포넌트 생성
+        파일선택(이미지), 질문 요소를 추가
+        선택한 파일과 질문을 서버(부트)에 전송
+        */}
+        <Route path="/image-text" element={<ImageText/>} />
       </Routes>
     </BrowserRouter>
   );
