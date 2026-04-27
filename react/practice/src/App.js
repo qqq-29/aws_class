@@ -159,3 +159,21 @@ export default App;
 // JavaScript
 // localStorage.removeItem('이름표');
 // // 예: 로그아웃 할 때 사용!
+
+
+
+
+
+
+// CREATE TABLE users (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     username VARCHAR(50) NOT NULL UNIQUE,
+//     password VARCHAR(100) NOT NULL -- 실제로는 암호화해서 저장해야 합니다!
+// );
+
+// INSERT INTO users (username, password) VALUES ('admin', '1234');users
+
+
+
+// # 1. XML 위치 알려주기 (src/main/resources/mapper 폴더 안의 모든 xml)
+// mybatis.mapper-locations=classpath:mappers/*.xml
