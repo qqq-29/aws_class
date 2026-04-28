@@ -6,5 +6,10 @@
         SELECT * FROM users 
         WHERE username = #{username}
     </select>
+    
+    <insert id="insertUser" parameterType="kr.hi.practice.domain.UserDTO">
+        INSERT INTO users (username, password, text, email, gender)
+        VALUES (#{username}, #{password}, #{text}, #{email}, #{gender})
+    </insert>
 
 </mapper>

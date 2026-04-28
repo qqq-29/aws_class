@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.hi.practice.domain.UserDTO;
 import kr.hi.practice.service.JwtService;
 import kr.hi.practice.service.UserService;
 
@@ -40,7 +41,7 @@ public class LoginController {
 		
 		Map<String, String> user = userService.authenticate(username, password);
 		
-		if(user != null && password.equals(user.get("password"))) {
+		if(user != null) {
 			// 성공하면 아까 만든 서비스로 토큰 생성!
 			String token = jwtService.createToken(username);
 			
@@ -65,6 +66,17 @@ public class LoginController {
 	    response.put("username", username);
 	    response.put("message", "당신은 인증된 사용자입니다!");
 	    return response;
+	}
+	
+	@PostMapping("/api/signup")
+	public Map<String, String> signup(@RequestBody UserDTO userDTO){
+		// 1. 서비스 호출 (암호화 및 DB 저장이 일어남)
+	    userService.register(userDTO);
+	    
+	    Map<String, String> response = new HashMap<>();
+	    response.put("message", "회원가입이 완료되었습니다!");
+		return response;
+		
 	}
 
 }

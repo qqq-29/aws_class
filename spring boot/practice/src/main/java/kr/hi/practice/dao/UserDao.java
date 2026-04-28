@@ -5,8 +5,12 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import kr.hi.practice.domain.UserDTO;
+
 @Mapper
 public interface UserDao {
 	// XML의 <select id="findByUsername">와 연결됩니다.
     Map<String, String> findByUsername(String username);
+
+	void insertUser(UserDTO user);
 }
