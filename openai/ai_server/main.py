@@ -257,9 +257,8 @@ async def ingest_pdf(file:UploadFile, size : int):
 
 		if not full_text.strip():
 			log("PDF에서 읽어올 글자가 없습니다.")
-		
-		chunks = [full_text[i:i+size] for i in range(0, len(full_text), size)]
 
+		chunks = [full_text[i:i+size] for i in range(0, len(full_text), size)]
 		log("[분할 완료]")
 		embeddings = []
 		for chunk in chunks:
@@ -269,8 +268,6 @@ async def ingest_pdf(file:UploadFile, size : int):
 			)
 			embeddings.append(embed_res.embeddings[0].values)
 		log("[임베딩 완료]")
-		
-		
 		collection.add(
 			# id를 "파일명_숫자_시간정수"
 			ids=[f"{file.filename}_{i}_{int(time.time())}" for i in range(len(chunks))],

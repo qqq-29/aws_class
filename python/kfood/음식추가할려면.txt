@@ -1,0 +1,39 @@
+방법 1: 데이터 추가 후 '처음부터 다시' 학습 (가장 추천)
+인공지능은 새로운 지식만 쏙 배우는 게 의외로 어렵습니다. (새로운 걸 배우면 옛날 걸 까먹는 '파괴적 망각' 현상 때문이죠.)
+
+데이터 추가: images 폴더에 새 음식 사진을 넣고, labels 폴더에 그 음식에 맞는 .txt 정답지를 넣습니다.
+
+YAML 수정: data.yaml의 nc를 수정(예: 53 -> 55)하고, names 리스트 끝에 새 음식 이름을 적습니다.
+
+다시 학습: 처음에 쓰셨던 코드를 그대로 다시 실행합니다.
+
+이때 팁: model = YOLO('yolov8n.pt') 대신, 방금 학습이 끝난 model = YOLO('runs/detect/train/weights/best.pt')를 넣고 시작하면 이전 지식을 활용해 더 빨리 배울 수 있습니다. (Fine-tuning)
+
+
+https://app.roboflow.com/
+
+위치확인하는 법:
+{
+    "boxes": [
+        {
+            "id": "5",
+            "type": "mask",
+            "label": "eel",
+            "x": "122.5",
+            "y": "87",
+            "width": "245",
+            "height": "168",
+            "area": "25593",
+            "mask": "eJxVkuty2jAQhV9Jx3KbtpnJTGYybYeYsyTEBhsMAdvYXBLe/1+PL0Aq2/q0Z1eWtKscjTuHwTigJwzOGWyga5ugF+bGobmhyXrecf+8Qhx6RQfWaT0ZSHHD/FayXoCZCwiXjnecIMMn93zBDB88cYpXNExtitoduLIYG/ExwUPDpxT3Ff8s8LPgKEdYMloi3JIrYEvkYMlgCRYMM7CiX2BcMUyhdcI5WLd9VPNbCm36u8Y73s0x2vFHhr8lfy3wu+L9Ak8lH5Z4LLlxC6ysYiEuxUrMxMZlSMVadmol9+JM9oUH+WOreXJzvFnDs4t1ujPfMMGRL6azuoqJ5di7grG9ixtxK66lbzt7Kh7FV9so/p0T2ROs+cECU+RiqWwt+dmxAPvktpnvK6bMM2Bfz8AuBRv6fuSMvq/xrVT/+d2X330Z3eZ3ytQSO0ZHF/t4YGKH6CDOxKN788lV34szxbVM5G8UNxcr2ZlYiLm4jk5uLa4iJcnXrr9W3RW8XLFhR3b7ettTfnY3ruvRPwzG/hoTEBe9VeT1kb+dzK4pdMOavBt1s4YsHPgPYx3b8A=="
+        }
+    ],
+    "height": 184,
+    "key": "food_photo.jpg",
+    "width": 245
+}
+
+구분,계산식 (픽셀 → 비율),결과값 (YOLO 포맷)
+중심 X,122.5÷245=0.5000
+중심 Y,87÷184=0.4728
+너비(W),245÷245=1.0000
+높이(H),168÷184=0.9130

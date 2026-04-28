@@ -31,3 +31,10 @@ java/.gitignore
 
 /bin/
 __pycache__/
+*.jpg
+*.bin
+*.pt
+*.yaml
+*.png
+*.ipynb
+*.csv
