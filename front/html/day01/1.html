@@ -1,0 +1,223 @@
+# '와이어프레임' 건강 식단 관리 대시보드 구현
+html_content = """
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>건강한 식단 관리 - 와이어프레임</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-pastel: #fdf6e9;
+            --main-pink: #ffb7b7;
+            --main-soft-pink: #ffe4e4;
+            --card-bg: #ffffff;
+            --text-color: #5a4a42;
+            --sidebar-width: 200px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-pastel);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--card-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 2px dashed #eee;
+        }
+
+        .profile-section { text-align: center; margin-bottom: 20px; }
+        .profile-img { width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 10px; border: 3px solid var(--main-soft-pink); overflow: hidden; }
+        
+        .nav-menu { list-style: none; }
+        .nav-menu li {
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .nav-menu li.active { background-color: var(--main-pink); color: white; }
+        .nav-menu li:hover:not(.active) { background-color: var(--main-soft-pink); }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h2 { font-family: 'Gaegu', cursive; font-size: 2rem; color: #444; }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .summary-card span { font-size: 0.9rem; color: #888; }
+        .summary-card div { font-size: 1.4rem; font-weight: bold; margin: 5px 0; }
+
+        /* 식단 기록 섹션 */
+        .meal-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+        }
+
+        .meal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        
+        .meal-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .meal-item {
+            border: 1px solid #f0f0f0;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .meal-img { width: 100%; aspect-ratio: 1/1; background: #fafafa; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+
+        .ai-msg {
+            background-color: #effaf3;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid #4caf50;
+            margin-top: 20px;
+        }
+
+        /* 하단바 (모바일용 가상) */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: white;
+            padding: 15px;
+            justify-content: space-around;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .meal-cards { grid-template-columns: repeat(2, 1fr); }
+            .bottom-nav { display: flex; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="profile-section">
+            <div class="profile-img">🐱</div>
+            <h3>님님님</h3>
+        </div>
+        <ul class="nav-menu">
+            <li class="active">🏠 대시보드</li>
+            <li>📝 식단 기록</li>
+            <li>📊 AI 분석</li>
+            <li>💡 식단 추천</li>
+            <li>⚙️ 설정</li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h2>와이어프레임 🌿</h2>
+            <div>🔔 👤</div>
+        </header>
+
+        <section class="summary-grid">
+            <div class="summary-card">
+                <span>에너지 섭취</span>
+                <div>1,350 kcal</div>
+                <small>목표 1,600</small>
+            </div>
+            <div class="summary-card">
+                <span>영양 밸런스</span>
+                <div>Good!</div>
+                <small>🌈 고른 섭취</small>
+            </div>
+            <div class="summary-card">
+                <span>오늘의 점수</span>
+                <div>85 점</div>
+                <small>최고예요! 👍</small>
+            </div>
+            <div class="summary-card">
+                <span>물 섭취</span>
+                <div>6 잔</div>
+                <small>목표 8잔</small>
+            </div>
+        </section>
+
+        <section class="meal-section">
+            <div class="meal-header">
+                <h3>오늘의 식단 기록</h3>
+                <span style="color: #888; font-size: 0.9rem;">더보기 ></span>
+            </div>
+            <div class="meal-cards">
+                <div class="meal-item">
+                    <span>☀️ 아침</span>
+                    <div class="meal-img">🥗</div>
+                    <p>그릭요거트 외</p>
+                    <strong>320 kcal</strong>
+                </div>
+                <div class="meal-item">
+                    <span>🌤️ 점심</span>
+                    <div class="meal-img">🍱</div>
+                    <p>현미밥, 닭가슴살</p>
+                    <strong>560 kcal</strong>
+                </div>
+                <div class="meal-item">
+                    <span>🌙 저녁</span>
+                    <div class="meal-img">🥘</div>
+                    <p>두부김치, 잡곡밥</p>
+                    <strong>470 kcal</strong>
+                </div>
+                <div class="meal-item" style="border: 2px dashed #ddd; display: flex; align-items: center; justify-content: center; color: #aaa;">
+                    ➕ 추가하기
+                </div>
+            </div>
+
+            <div class="ai-msg">
+                <strong>🤖 AI 한마디</strong><br>
+                오늘 단백질 섭취가 좋아요! 내일은 채소를 조금 더 추가해보는 건 어떨까요?
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <span>🏠</span>
+        <span>📝</span>
+        <span>📊</span>
+        <span>💡</span>
+        <span>👤</span>
+    </nav>
+</body>
+</html>
+"""
+
+with open("diet_dashboard.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
